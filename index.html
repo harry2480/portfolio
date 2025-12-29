@@ -54,11 +54,7 @@
                     <p>技術とコミュニケーション能力を兼ね備えた次世代のエンジニアを目指しています。高校・大学での学びを通じて、最新の技術スキルを磨き、社会に貢献できる人材になることを目標としています。チームワークと実行力を大切にし、常に挑戦する姿勢を持っています。</p>
                 </div>
             </div>
-                    <div class="pdf-container">
-            <iframe src="profile.pdf" width="100%" height="500px"></iframe>
-        </div>
-        <center><button onclick="window.open('/my/profile.pdf', '_blank')">スマホでPDFを開く</button></center>
-<style>
+    <style>
     button {
         padding: 10px 20px;
         font-size: 16px;
@@ -166,7 +162,7 @@ iframe {
                 <div class="timeline-item">
                     <div class="timeline-content">
                         <h3>現在</h3>
-                        <p>基本情報技術者試験を学びながら趣味でLLM開発をしています。その一環としてチームみらいのサポーターとしてエンジニアをしている。</p>
+                        <p>基本情報技術者試験を学びながら趣味でLLM開発をしており、その一環としてチームみらいのサポーター・学生チームの運営メンバーとしてエンジニアをしている。</p>
                     </div>
                 </div>
             </div>
@@ -181,7 +177,7 @@ iframe {
                         <div class="skill-card">
                             <i class="ri-code-s-slash-line"></i>
                             <h4>フロントエンド開発</h4>
-                            <p>HTML, CSS, JavaScript, Vue.js, TypeScript</p>
+                            <p>HTML, CSS, JavaScript, Vue.js, Next.js, TypeScript</p>
                         </div>
                         <div class="skill-card">
                             <i class="ri-server-line"></i>
@@ -322,10 +318,10 @@ window.onclick = function(event) {
                     <p>様々なプログラミング言語を学び、アプリケーションを開発しています。</p>
                     <span class="hover-message">クリックして詳細を表示</span>
                 </div>
-                <div class="hobby-card" data-title="ライブ" data-description="設置されているフォトスポットを撮って楽しんでいます。撮ったものは後ほど編集します。それも醍醐味の１つです！">
+                <div class="hobby-card">
                     <h3>ライブ</h3>
                     <p>設置されているフォトスポットを撮って楽しんでいます。撮ったものは後ほど編集します。それも醍醐味の１つです！</p>
-                    <span class="hover-message">クリックして詳細を表示</span>
+                    <button class="photo-button" onclick="event.stopPropagation(); openPhotoSlideshow();">写真を見る</button>
                 </div>
                 <div class="hobby-card" data-title="技術のキャッチアップ" data-description="メインはX（旧Twitter）で技術情報をキャッチアップしています。">
                     <h3>技術のキャッチアップ</h3>
@@ -348,6 +344,197 @@ window.onclick = function(event) {
                 </div>
             </div>
         </section>
+
+        <!-- フォトスライドショー -->
+        <div id="photoSlideshow" class="photo-slideshow-overlay">
+            <div class="photo-slideshow-content">
+                <button class="close-slideshow" onclick="event.stopPropagation(); closePhotoSlideshow();">Close</button>
+                <div class="photo-slider" id="photoSlider">
+                    <!-- 写真をここに追加 -->
+                    <div class="photo-polaroid">
+                        <img src="https://picsum.photos/600/400?random=1" alt="Photo 1">
+                        <p class="photo-caption">Photo 1</p>
+                    </div>
+                    <div class="photo-polaroid">
+                        <img src="https://picsum.photos/600/400?random=2" alt="Photo 2">
+                        <p class="photo-caption">Photo 2</p>
+                    </div>
+                    <div class="photo-polaroid">
+                        <img src="https://picsum.photos/600/400?random=3" alt="Photo 3">
+                        <p class="photo-caption">Photo 3</p>
+                    </div>
+                    <div class="photo-polaroid">
+                        <img src="https://picsum.photos/600/400?random=4" alt="Photo 4">
+                        <p class="photo-caption">Photo 4</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+/* フォトスライドショーのスタイル */
+.photo-slideshow-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(240, 240, 240, 0.98);
+    z-index: 9999;
+    overflow: hidden;
+}
+
+body.dark-mode .photo-slideshow-overlay {
+    background-color: rgba(18, 18, 18, 0.98);
+}
+
+.photo-slideshow-overlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-slideshow-content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-slideshow {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    z-index: 10001;
+    transition: background-color 0.3s ease;
+}
+
+.close-slideshow:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.photo-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+}
+
+.photo-polaroid {
+    position: absolute;
+    background: white;
+    padding: 1rem;
+    padding-bottom: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+    pointer-events: auto;
+    cursor: grab;
+    transition: transform 0.6s ease, opacity 0.6s ease, z-index 0s 0.3s;
+}
+
+.photo-polaroid.dragging {
+    cursor: grabbing;
+    transition: none;
+}
+
+body.dark-mode .photo-polaroid {
+    background: #f5f5f5;
+}
+
+.photo-polaroid img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.photo-caption {
+    text-align: center;
+    margin-top: 1rem;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    color: #555;
+    font-size: 1.2rem;
+}
+
+/* 写真の位置とスタイル - 重ねて表示 */
+.photo-polaroid[data-position="1"] {
+    transform: rotate(-6deg) translateY(-20px);
+    z-index: 1;
+}
+
+.photo-polaroid[data-position="2"] {
+    transform: rotate(4deg) translateY(10px) translateX(30px);
+    z-index: 2;
+}
+
+.photo-polaroid[data-position="3"] {
+    transform: rotate(-3deg) translateY(-10px) translateX(-25px);
+    z-index: 3;
+}
+
+.photo-polaroid[data-position="4"] {
+    transform: rotate(7deg) translateY(15px) translateX(15px);
+    z-index: 4;
+}
+
+.photo-polaroid.flipping {
+    transform: translateX(100px) rotate(25deg) scale(0.8);
+    opacity: 0;
+    z-index: 5;
+}
+
+.photo-button {
+    margin-top: 1rem;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.photo-button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .photo-polaroid {
+        max-width: 350px;
+        padding: 0.8rem;
+        padding-bottom: 2.5rem;
+    }
+    
+    .photo-caption {
+        font-size: 1rem;
+    }
+    
+    .close-slideshow {
+        top: 1rem;
+        right: 1rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+}
+        </style>
 
         <style>
 .hobby-card {
@@ -422,20 +609,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const closePopup = document.querySelector('.close-popup');
 
     hobbyCards.forEach(card => {
-        card.addEventListener('click', () => {
+        card.addEventListener('click', (e) => {
+            // ボタンのクリックの場合は処理をスキップ
+            if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+                return;
+            }
+            
             const title = card.getAttribute('data-title');
             const description = card.getAttribute('data-description');
 
+            // data-title属性がない場合は何もしない（写真を見るボタンがあるカード用）
+            if (!title) {
+                return;
+            }
+
             popupTitle.textContent = title;
             popupDescription.textContent = description;
-
-            popup.style.display = 'flex'; // ポップアップを表示
+            popup.style.display = 'block';
         });
     });
 
-    closePopup.addEventListener('click', () => {
-        popup.style.display = 'none'; // ポップアップを非表示
-    });
+    if (closePopup) {
+        closePopup.addEventListener('click', (e) => {
+            e.stopPropagation();
+            popup.style.display = 'none';
+        });
+    }
 
     // ポップアップ外をクリックしたときも非表示にする
     popup.addEventListener('click', (e) => {
@@ -445,34 +644,184 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const hobbyCards = document.querySelectorAll('.hobby-card');
-    const popup = document.getElementById('popup');
-    const popupTitle = document.getElementById('popup-title');
-    const popupDescription = document.getElementById('popup-description');
-    const closePopup = document.querySelector('.close-popup');
+// フォトスライドショーの機能
+let photoPositions = [];
+let isFlipping = false;
+let isDragging = false;
+let startX = 0;
+let startY = 0;
+let currentX = 0;
+let currentY = 0;
+let draggedPhotoIndex = -1;
 
-    hobbyCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const title = card.dataset.title;
-            const description = card.dataset.description;
-
-            popupTitle.textContent = title;
-            popupDescription.textContent = description;
-            popup.style.display = 'block';
-        });
+function openPhotoSlideshow() {
+    const slideshow = document.getElementById('photoSlideshow');
+    const photos = document.querySelectorAll('.photo-polaroid');
+    
+    // 初期位置を設定
+    photoPositions = Array.from(photos).map((photo, index) => index + 1);
+    updatePhotoPositions();
+    
+    // ドラッグイベントを追加
+    photos.forEach((photo, index) => {
+        // マウスイベント
+        photo.addEventListener('mousedown', (e) => handleDragStart(e, index));
+        // タッチイベント
+        photo.addEventListener('touchstart', (e) => handleDragStart(e, index), { passive: false });
     });
+    
+    // グローバルイベント
+    document.addEventListener('mousemove', handleDragMove);
+    document.addEventListener('mouseup', handleDragEnd);
+    document.addEventListener('touchmove', handleDragMove, { passive: false });
+    document.addEventListener('touchend', handleDragEnd);
+    
+    slideshow.classList.add('active');
+}
 
-    closePopup.addEventListener('click', () => {
-        popup.style.display = 'none';
-    });
+function closePhotoSlideshow() {
+    const slideshow = document.getElementById('photoSlideshow');
+    slideshow.classList.remove('active');
+    
+    // イベントリスナーをクリーンアップ
+    document.removeEventListener('mousemove', handleDragMove);
+    document.removeEventListener('mouseup', handleDragEnd);
+    document.removeEventListener('touchmove', handleDragMove);
+    document.removeEventListener('touchend', handleDragEnd);
+    
+    // 状態をリセット
+    isDragging = false;
+    isFlipping = false;
+    draggedPhotoIndex = -1;
+}
 
-    // ポップアップ外側クリックで閉じる
-    window.addEventListener('click', (event) => {
-        if (event.target === popup) {
-            popup.style.display = 'none';
-        }
+function updatePhotoPositions() {
+    const photos = document.querySelectorAll('.photo-polaroid');
+    photos.forEach((photo, index) => {
+        photo.setAttribute('data-position', photoPositions[index]);
     });
+}
+
+function handleDragStart(e, index) {
+    // 一番上の写真（position=4）だけドラッグ可能
+    if (photoPositions[index] !== 4 || isFlipping) return;
+    
+    isDragging = true;
+    draggedPhotoIndex = index;
+    
+    const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+    
+    startX = clientX;
+    startY = clientY;
+    currentX = clientX;
+    currentY = clientY;
+    
+    const photos = document.querySelectorAll('.photo-polaroid');
+    photos[index].classList.add('dragging');
+    
+    e.preventDefault();
+}
+
+function handleDragMove(e) {
+    if (!isDragging || draggedPhotoIndex === -1) return;
+    
+    const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+    
+    currentX = clientX;
+    currentY = clientY;
+    
+    const deltaX = currentX - startX;
+    const deltaY = currentY - startY;
+    
+    // ドラッグ中の視覚的フィードバック
+    const photos = document.querySelectorAll('.photo-polaroid');
+    const draggedPhoto = photos[draggedPhotoIndex];
+    
+    // 左右両方向のドラッグに反応（めくる動作）
+    const absDeltaX = Math.abs(deltaX);
+    if (absDeltaX > 5) { // 5ピクセル以上で反応
+        const rotation = Math.min(absDeltaX / 10, 30) * (deltaX > 0 ? 1 : -1); // 最大30度回転
+        const scale = 1 - Math.min(absDeltaX / 500, 0.2); // 最大20%縮小
+        draggedPhoto.style.transform = `translateX(${deltaX}px) translateY(${deltaY}px) rotate(${rotation}deg) scale(${scale})`;
+        draggedPhoto.style.opacity = 1 - Math.min(absDeltaX / 300, 0.5);
+    }
+    
+    e.preventDefault();
+}
+
+function handleDragEnd(e) {
+    if (!isDragging || draggedPhotoIndex === -1) return;
+    
+    const deltaX = currentX - startX;
+    const threshold = 50; // めくるための閾値（ピクセル）- 左右両方向対応
+    
+    const photos = document.querySelectorAll('.photo-polaroid');
+    const draggedPhoto = photos[draggedPhotoIndex];
+    
+    draggedPhoto.classList.remove('dragging');
+    
+    // 十分にドラッグされた場合（左右どちらでも）、めくる
+    if (Math.abs(deltaX) > threshold && !isFlipping) {
+        isFlipping = true;
+        
+        // めくるアニメーション - flippingクラスを追加してアニメーション
+        draggedPhoto.classList.add('flipping');
+        
+        setTimeout(() => {
+            // クリックされた写真のindexを見つけて、その位置を1に、他を+1
+            const newPositions = [];
+            for (let i = 0; i < photoPositions.length; i++) {
+                if (i === draggedPhotoIndex) {
+                    newPositions[i] = 1; // 一番下に
+                } else {
+                    // 他の写真は1つ上に
+                    newPositions[i] = photoPositions[i] < 4 ? photoPositions[i] + 1 : photoPositions[i];
+                }
+            }
+            photoPositions = newPositions;
+            
+            // スタイルをリセット
+            draggedPhoto.style.transform = '';
+            draggedPhoto.style.opacity = '';
+            draggedPhoto.classList.remove('flipping');
+            updatePhotoPositions();
+            
+            // 状態をリセット
+            isDragging = false;
+            draggedPhotoIndex = -1;
+            startX = 0;
+            startY = 0;
+            currentX = 0;
+            currentY = 0;
+            isFlipping = false;
+        }, 600);
+    } else {
+        // 閾値に達していない場合、トランジション付きで元の位置に戻る
+        draggedPhoto.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        draggedPhoto.style.transform = '';
+        draggedPhoto.style.opacity = '';
+        
+        // トランジション終了後にクリーンアップ
+        setTimeout(() => {
+            draggedPhoto.style.transition = '';
+            isDragging = false;
+            draggedPhotoIndex = -1;
+            startX = 0;
+            startY = 0;
+            currentX = 0;
+            currentY = 0;
+        }, 300);
+    }
+}
+
+// ポップアップ外をクリックで閉じる
+document.addEventListener('click', (e) => {
+    const slideshow = document.getElementById('photoSlideshow');
+    if (e.target === slideshow) {
+        closePhotoSlideshow();
+    }
 });
 
 </script>
