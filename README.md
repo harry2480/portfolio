@@ -7,7 +7,7 @@
 - Humanities engineer
 - [NEXT STAGE](https://nextstage-group.com/)
 - [Team Mirai](https://team-mir.ai) Supporters, [Development](https://github.com/team-mirai) Support, and Student Team (Operations)
-- [Portfolio](https://github.com/harry2480/harry2480/blob/main/README.md)
+- [Portfolio](https://harry2480.github.io/harry2480/)
 
 ## Skills & Stack
 
@@ -71,3 +71,4 @@
 - 資産運用の勉強をする（Mastering personal finance.）
 - 身体が硬いのでストレッチを継続する（I'll stick to a stretching routine to improve my flexibility.）
 - きちんとしたポートフォリオサイトをいい加減つくる（It’s about time I built a proper portfolio site.）
+
