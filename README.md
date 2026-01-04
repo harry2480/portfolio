@@ -7,7 +7,8 @@
 - Humanities engineer
 - [NEXT STAGE](https://nextstage-group.com/)
 - [Team Mirai](https://team-mir.ai) Supporters, [Development](https://github.com/team-mirai) Support, and Student Team (Operations)
-- [POrtfolio](https://github.com/harry2480/harry2480/blob/main/README.md)
+- [Portfolio](https://github.com/harry2480/harry2480/blob/main/README.md)
+
 ## Skills & Stack
 
 ### Languages
@@ -69,4 +70,5 @@
 - 今年中にAuDHDに特化したiOS・AppleWatchアプリを作る（Building an AuDHD-specific iOS & Apple Watch app by the end of 2026.）
 - 資産運用の勉強をする（Mastering personal finance.）
 - 身体が硬いのでストレッチを継続する（I'll stick to a stretching routine to improve my flexibility.）
+
 
