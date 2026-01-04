@@ -70,5 +70,4 @@
 - 今年中にAuDHDに特化したiOS・AppleWatchアプリを作る（Building an AuDHD-specific iOS & Apple Watch app by the end of 2026.）
 - 資産運用の勉強をする（Mastering personal finance.）
 - 身体が硬いのでストレッチを継続する（I'll stick to a stretching routine to improve my flexibility.）
-
-
+- きちんとしたポートフォリオサイトをいい加減つくる（It’s about time I built a proper portfolio site.）
