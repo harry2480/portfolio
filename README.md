@@ -1,74 +1,138 @@
-# Harry
+# DEV_CORE - ポートフォリオ＆技術ブログ
 
-- 日本語話者 (Japanese Speaker)
-- From Osaka
-- 大学4年 (B4)（OIT Faculty of Intellectual Property, Department of Intellectual Property）
-- IT engineer formerly involved in a [HPAP](http://soaroit.jp/birdman/)
-- Humanities engineer
-- [NEXT STAGE](https://nextstage-group.com/)
-- [Team Mirai](https://team-mir.ai) Supporters, [Development](https://github.com/team-mirai) Support, and Student Team (Operations)
-- [Portfolio](https://harry2480.github.io/harry2480/)
+モダン Web 技術と美しい UI/UX デザインを融合させたポートフォリオサイト。
 
-## Skills & Stack
+## 🚀 技術スタック
 
-### Languages
-![C](https://img.shields.io/badge/C-4640b8.svg?logo=C&style=flat)
-![C++](https://img.shields.io/badge/-C++-365dbf.svg?logo=C%2B%2B&style=flat)
-![C#](https://img.shields.io/badge/C%23-%23663399.svg?logo=C-sharp&style=flat)
-![Python](https://img.shields.io/badge/-Python-F9DC3E.svg?logo=Python&style=flat)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E.svg?logo=JavaScript&style=flat&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6.svg?logo=typeScript&style=flat&logoColor=white)
+- **フレームワーク:** Next.js 16 (App Router)
+- **言語:** TypeScript 5.x
+- **スタイリング:** Tailwind CSS v4 + CSS トークン (`@harry4869/css-tokens`)
+- **コンテンツ:** Markdown/MDX
+- **アニメーション:** Framer Motion, Lenis (スムーススクロール)
+- **UI コンポーネント:** Radix UI, shadcn/ui
+- **コマンドパレット:** cmdk
+- **静的ホスティング:** GitHub Pages
 
-### Frontend & Backend
-![html](https://img.shields.io/badge/HTML-E34F26.svg?logo=HTML5&style=flat&logoColor=white)
-![CSS](https://img.shields.io/badge/CSS-1572B6.svg?logo=CSS3&style=flat&logoColor=white)
-![React](https://img.shields.io/badge/React-%2320232a.svg?logo=react&style=flat)
-![Vue.Js](https://img.shields.io/badge/Vue.js-%2335495e.svg?logo=vuedotjs&style=flat)
-![Node.js](https://img.shields.io/badge/Node.js-6DA55F.svg?logo=node.js&style=flat&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white)
+## 📁 プロジェクト構造
 
-### Tools & IDES
-![Visual Studio](https://img.shields.io/badge/-Visual%20Studio-5C2D91.svg?logo=visual-studio&style=flat)
-![VSCode](https://img.shields.io/badge/-Visual%20Studio%20Code-007ACC.svg?logo=visual-studio-コード&style=flat)
-![Git](https://img.shields.io/badge/git-%23F05033.svg?style=flat&logo=git&logoColor=white)
-![GitHub](https://img.shields.io/badge/Github-%23121011.svg?logo=GitHub&style=flat&logoColor=white)
+```
+src/
+  ├── app/
+  │   ├── page.tsx              # トップページ (Bento Grid)
+  │   ├── layout.tsx            # Root レイアウト
+  │   └── blog/
+  │       ├── page.tsx          # ブログ一覧
+  │       ├── layout.tsx        # ブログレイアウト
+  │       └── [slug]/
+  │           └── page.tsx      # ブログ詳細 (動的)
+  ├── components/
+  │   ├── BentoCard.tsx         # Bento Grid カード
+  │   ├── ProjectCard.tsx       # プロジェクトカード
+  │   ├── CommandPalette.tsx    # コマンドパレット (Ctrl+K)
+  │   ├── SmoothScrollProvider.tsx # スムーススクロール (Lenis)
+  │   ├── TableOfContents.tsx   # 目次 (TOC)
+  │   └── mdx/
+  │       ├── Message.tsx       # MDX カスタムコンポーネント
+  │       ├── CodeBlock.tsx     # コード表示
+  │       └── index.ts
+  ├── lib/
+  │   ├── content.ts            # コンテンツローダー
+  │   └── utils.ts              # ユーティリティ
+  └── styles/
+      └── globals.css           # グローバルスタイル
+content/
+  └── posts/
+      └── sample-blog.mdx       # テスト記事
+.github/
+  └── workflows/
+      └── deploy.yml            # GitHub Actions ワークフロー
+```
 
-### Others
-![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=flat&logo=notion&logoColor=white)
-![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=flat&logo=markdown&logoColor=white)
-![YAML](https://img.shields.io/badge/yaml-%23ffffff.svg?style=flat&logo=yaml&logoColor=151515)
+## ✨ 主な機能
 
-## Studying Skills
+- ✅ **Bento Grid レイアウト:** プロフィール・プロジェクト・ブログを視覚的に配置
+- ✅ **ブログシステム:** MDX で記事作成、自動読了時間計算
+- ✅ **コマンドパレット:** `Ctrl+K` でナビゲーション・検索
+- ✅ **スムーススクロール:** 高級感のある操作感 (Lenis)
+- ✅ **目次 (TOC):** スクロール位置に応じたハイライト
+- ✅ **静的生成:** `next export` で完全静的出力、GitHub Pages 対応
+- ✅ **CI/CD:** GitHub Actions で自動ビルド・デプロイ
 
-- Vue.js, Next.js, TypeScript, Swift
+## 🛠️ セットアップ
 
-## Interests
+### 前提条件
 
-- 自然言語処理
-- LLM（大規模言語モデル）
+- Node.js 18.x 以上
 
-## LLMs
+### インストール
 
-- Gemini（Google AI Pro）
-- GitHub Pro
-- Notion AI
+```bash
+npm install
+```
 
-## Certifications in progress（学習中の資格）
+### 開発
 
-- FE (Fundamental Information Technology Engineer Examination)
+```bash
+npm run dev
+```
 
-## Certifications to pursue（学習したい資格）
+http://localhost:3000 で起動
 
-- SG (Information Security Management Examination)
+### ビルド
 
-## Goals for 2026
+```bash
+npm run build
+```
 
-- スプシで管理していた家計簿を廃止し、[まる見え家計簿（みらいまる見え政治資金のフォーク）](https://github.com/team-mirai/marumie)を本格始動させて個人のお金の流れを明確にする（Abolish the household account book managed with Google Sheets and officially launch [Marumie Household Account Book (a fork of Miraimaru Mie Political Funds)](https://github.com/team-mirai/marumie) to clarify personal finances.）
-- 3月にMacを買って年内に自分が欲しいアプリをリリースする（I bought a Mac in March and plan to release the app I want by the end of the year.）
-- 社会人1年目になるので、LLMやAIを最大限に活用し、早く仕事に慣れる（As I'm entering my first year as a working professional, I want to leverage LLMs and AI to their full potential to quickly get accustomed to my job.）
-- 基本情報技術者試験を維持で取る（Obtain and maintain the Fundamental Information Technology Engineer Examination qualification.）
-- 今年中にAuDHDに特化したiOS・AppleWatchアプリを作る（Building an AuDHD-specific iOS & Apple Watch app by the end of 2026.）
-- 資産運用の勉強をする（Mastering personal finance.）
-- 身体が硬いのでストレッチを継続する（I'll stick to a stretching routine to improve my flexibility.）
-- きちんとしたポートフォリオサイトをいい加減つくる（It’s about time I built a proper portfolio site.）
+`out/` ディレクトリに静的ファイルが生成されます。
 
+## 📝 ブログ記事の追加
+
+`content/posts/` ディレクトリに `.mdx` ファイルを追加します。
+
+**フロントマター例:**
+
+```mdx
+---
+title: '記事タイトル'
+description: '概要'
+date: '2025-01-25'
+tags: ['tag1', 'tag2']
+published: true
+---
+
+# 記事本文
+```
+
+## 🚀 デプロイ
+
+### GitHub Pages へのデプロイ
+
+1. GitHub にリポジトリを作成
+2. リポジトリの **Settings → Pages** で以下を設定：
+   - Source: **GitHub Actions**
+3. `main` ブランチに `push` すると自動デプロイが開始されます
+
+**手動デプロイ:**
+
+```bash
+npm run build
+# out/ ディレクトリを GitHub Pages にアップロード
+```
+
+## 📊 性能目標
+
+- Lighthouse Score: 95+ (Performance, Accessibility, Best Practices, SEO)
+- ページロード時間: <1s (SSG)
+
+## 🛠️ 今後の改善予定
+
+- [ ] OGP 画像の自動生成
+- [ ] RSS フィード対応
+- [ ] Sitemap 自動生成
+- [ ] より詳細なアナリティクス
+- [ ] ダークモードの完全対応
+
+## 📄 ライセンス
+
+MIT License

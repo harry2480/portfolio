@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTFOLIO | BMSG FES '24 STYLE</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@100;400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'bebas': ['"Bebas Neue"', 'sans-serif'],
+                        'sans': ['"Noto Sans JP"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#050505',
+                            gray: '#1a1a1a',
+                            silver: '#e0e0e0',
+                            accent: '#FF0033', // BMSG FES red accent
+                            blue: '#0033FF',
+                        }
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #202020 1px, transparent 1px), linear-gradient(to bottom, #202020 1px, transparent 1px)",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            /* 全体は固定し、各フロア内でスクロールさせる */
+            overflow: hidden; 
+            height: 100vh;
+            width: 100vw;
+        }
+        
+        /* 各フロアのコンテナ：スクロール可能に設定 */
+        .floor-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto; /* 縦スクロール許可 */
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch; /* モバイルでの慣性スクロール */
+            padding-bottom: 100px; /* 下部余白 */
+        }
+
+        .grid-bg {
+            background-size: 4rem 4rem;
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
+
+        /* カスタムスクロールバー（フロア内） */
+        .floor-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .floor-container::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        .floor-container::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 2px;
+        }
+        .floor-container::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+
+        /* テキストマスクアニメーション */
+        .reveal-text-container {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+        .reveal-text {
+            display: inline-block;
+            transform: translateY(110%);
+        }
+
+        /* エレベータードア */
+        .elevator-door {
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            width: 50vw;
+            background-color: #0a0a0a;
+            z-index: 50;
+            border-right: 1px solid #333;
+            transform: scaleX(0); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .elevator-door-left {
+            left: 0;
+            transform-origin: left;
+            border-right: 1px solid #333;
+        }
+        .elevator-door-right {
+            right: 0;
+            transform-origin: right;
+            border-left: 1px solid #333;
+        }
+
+        /* フロア遷移インジケーター */
+        .floor-transit-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 60;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 12rem;
+            line-height: 1;
+            color: white;
+            opacity: 0;
+            pointer-events: none;
+            text-align: center;
+        }
+        .floor-transit-label {
+            font-size: 1.5rem;
+            letter-spacing: 0.5em;
+            color: #666;
+            display: block;
+            margin-bottom: -1rem;
+        }
+
+        /* ノイズエフェクト */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.04;
+            background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="1"/%3E%3C/svg%3E');
+        }
+
+        /* 入館証風カード */
+        .access-card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- 背景グリッド & ノイズ -->
+    <div class="fixed inset-0 grid-bg opacity-30 pointer-events-none z-0 bg-grid-pattern"></div>
+    <div class="noise"></div>
+
+    <!-- UI Overlay (Header/Footer/Sidebar) - 固定表示 -->
+    <header class="fixed top-0 left-0 w-full z-40 px-6 py-6 flex justify-between items-start mix-blend-difference text-white pointer-events-none">
+        <div class="flex flex-col pointer-events-auto">
+            <h1 class="font-bebas text-4xl leading-none tracking-widest cursor-pointer" onclick="goToFloor(1)">BUILDING</h1>
+            <span class="text-xs font-sans tracking-[0.3em] opacity-70">ENTRANCE SYSTEM</span>
+        </div>
+        
+        <!-- Hamburger Menu Trigger -->
+        <button id="menu-btn" class="group flex flex-col items-end gap-1.5 cursor-pointer z-50 pointer-events-auto">
+            <span class="w-10 h-[2px] bg-white transition-all duration-300 group-hover:w-8"></span>
+            <span class="w-6 h-[2px] bg-white transition-all duration-300 group-hover:w-10"></span>
+            <span class="w-8 h-[2px] bg-white transition-all duration-300 group-hover:w-6"></span>
+            <span class="text-[10px] font-bebas tracking-widest mt-1">MENU</span>
+        </button>
+    </header>
+
+    <!-- Floor Indicator (Sidebar) -->
+    <aside class="fixed left-6 bottom-10 z-30 hidden md:flex flex-col gap-2 font-bebas text-sm text-gray-500">
+        <div class="floor-marker active text-white cursor-pointer hover:text-brand-accent transition-colors" data-floor="1">01 ENTRANCE</div>
+        <div class="floor-marker cursor-pointer hover:text-brand-accent transition-colors" data-floor="2">02 OFFICE</div>
+        <div class="floor-marker cursor-pointer hover:text-brand-accent transition-colors" data-floor="3">03 LAB</div>
+        <div class="floor-marker cursor-pointer hover:text-brand-accent transition-colors" data-floor="4">04 ARCHIVE</div>
+        <div class="floor-marker cursor-pointer hover:text-brand-accent transition-colors" data-floor="5">05 RECEPTION</div>
+        <div class="h-16 w-[1px] bg-gray-700 mt-2 ml-1"></div>
+        <div class="transform -rotate-90 origin-bottom-left translate-x-3 translate-y-8 text-xs tracking-widest text-brand-accent">
+            CURRENT FLOOR
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main id="app" class="relative z-10 w-full h-full">
+        
+        <!-- FLOOR 01: ENTRANCE (自社ビル入り口風) -->
+        <section id="floor-1" class="floor-container">
+            <!-- Background Image: Modern Building Entrance -->
+            <div class="fixed inset-0 z-0 pointer-events-none">
+                <div class="absolute inset-0 bg-black/60 z-10"></div>
+                <!-- 建築的な画像に変更 -->
+                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
+                     class="w-full h-full object-cover opacity-50 grayscale" alt="Building Entrance">
+            </div>
+
+            <div class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
+                
+                <!-- Building Signage -->
+                <div class="text-center mb-12">
+                    <div class="reveal-text-container">
+                        <h2 class="reveal-text font-bebas text-[15vw] md:text-[10rem] leading-[0.8] tracking-tight mix-blend-overlay opacity-80">
+                            TOKYO<br>HQ
+                        </h2>
+                    </div>
+                    <div class="mt-4 flex flex-col items-center gap-2">
+                        <p class="font-sans text-xs tracking-[0.5em] text-gray-400 reveal-item opacity-0 translate-y-4">
+                            EST. 1998 / MINATO-KU
+                        </p>
+                        <div class="w-20 h-[1px] bg-white/30 reveal-item opacity-0 scale-x-0"></div>
+                    </div>
+                </div>
+
+                <!-- Access Card / Gate UI -->
+                <div class="access-card w-full max-w-md p-8 rounded-sm backdrop-blur-md reveal-item opacity-0 translate-y-8 transform transition-all duration-500 hover:border-white/50 group cursor-pointer" onclick="goToFloor(2)">
+                    <div class="flex justify-between items-start mb-12">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-sans text-gray-400 tracking-widest mb-1">VISITOR PASS</span>
+                            <span class="font-bebas text-2xl tracking-wide text-white">ACCESS GRANTED</span>
+                        </div>
+                        <div class="w-8 h-8 border border-white/30 rounded-full flex items-center justify-center">
+                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-end justify-between">
+                        <div class="font-mono text-xs text-gray-500">ID: GUEST-001</div>
+                        <div class="flex items-center gap-3">
+                            <span class="font-bebas text-xl tracking-widest group-hover:text-brand-accent transition-colors">TOUCH TO ENTER</span>
+                            <span class="text-xl transform group-hover:translate-x-1 transition-transform">→</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Scan line effect -->
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-accent to-transparent opacity-0 group-hover:opacity-50 group-hover:animate-[scan_2s_infinite]"></div>
+                </div>
+
+                <style>
+                    @keyframes scan {
+                        0% { top: 0%; opacity: 0; }
+                        10% { opacity: 1; }
+                        90% { opacity: 1; }
+                        100% { top: 100%; opacity: 0; }
+                    }
+                </style>
+
+                <!-- Scroll Indicator (Page specific) -->
+                <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+                    <span class="text-[10px] tracking-widest font-sans">SCROLL TO EXPLORE</span>
+                    <div class="w-[1px] h-12 bg-gray-600"></div>
+                </div>
+            </div>
+
+            <!-- Additional Content (Scrollable Area) -->
+            <div class="relative z-10 w-full bg-black/80 backdrop-blur-lg border-t border-white/10 min-h-[50vh] py-20 px-6">
+                <div class="max-w-4xl mx-auto">
+                    <h3 class="font-bebas text-4xl mb-8 text-gray-300">BUILDING GUIDE</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans text-sm text-gray-400 leading-relaxed">
+                        <div>
+                            <p class="mb-4">
+                                本サイトは、Webエンジニアのポートフォリオを「架空の自社ビル」に見立てて構成しています。
+                                エレベーターを使って各フロア（ページ）へアクセスしてください。
+                            </p>
+                            <p>
+                                圧倒的な没入感と、機能的なアクセシビリティの両立を目指しました。
+                                スクロールすることで、建物の詳細情報や隠されたコンテンツを発見できます。
+                            </p>
+                        </div>
+                        <div>
+                            <ul class="space-y-4 border-l border-white/20 pl-6">
+                                <li>
+                                    <span class="block text-white font-bold text-xs mb-1">FLOOR 02: OFFICE</span>
+                                    制作実績・プロジェクトの展示エリア
+                                </li>
+                                <li>
+                                    <span class="block text-white font-bold text-xs mb-1">FLOOR 03: LAB</span>
+                                    技術スタック・実験的コードの保管庫
+                                </li>
+                                <li>
+                                    <span class="block text-white font-bold text-xs mb-1">FLOOR 05: RECEPTION</span>
+                                    お問い合わせ・コンタクトフォーム
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FLOOR 02: OFFICE (WORKS) - Scrollable -->
+        <section id="floor-2" class="floor-container hidden">
+            <div class="pt-32 px-6 pb-20 max-w-7xl mx-auto">
+                <div class="flex items-end justify-between mb-12 border-b border-white/20 pb-4">
+                    <h2 class="font-bebas text-6xl lg:text-8xl">OFFICE / WORKS</h2>
+                    <span class="font-sans text-xs tracking-widest mb-4">制作実績エリア</span>
+                </div>
+
+                <!-- スクロール確認用の長いコンテンツ -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16">
+                    <!-- Item 1 -->
+                    <article class="group">
+                        <div class="relative aspect-video bg-gray-900 border border-white/10 overflow-hidden mb-4">
+                            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                        </div>
+                        <h3 class="font-bebas text-3xl mb-2">NEO COMMERCE PLATFORM</h3>
+                        <p class="text-sm text-gray-400 font-sans leading-relaxed">
+                            大規模ECサイトのリニューアルプロジェクト。ヘッドレスコマースアーキテクチャを採用し、フロントエンドのパフォーマンスを劇的に改善。
+                        </p>
+                        <div class="mt-4 flex gap-2">
+                            <span class="text-[10px] border border-white/30 px-2 py-1">NEXT.JS</span>
+                            <span class="text-[10px] border border-white/30 px-2 py-1">SHOPIFY</span>
+                        </div>
+                    </article>
+
+                    <!-- Item 2 -->
+                    <article class="group mt-0 md:mt-20">
+                        <div class="relative aspect-video bg-gray-900 border border-white/10 overflow-hidden mb-4">
+                            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                        </div>
+                        <h3 class="font-bebas text-3xl mb-2">CORPORATE BRANDING</h3>
+                        <p class="text-sm text-gray-400 font-sans leading-relaxed">
+                            テック企業のブランディングサイト。WebGLを用いたデータビジュアライゼーションを実装し、企業の先進性を表現。
+                        </p>
+                        <div class="mt-4 flex gap-2">
+                            <span class="text-[10px] border border-white/30 px-2 py-1">THREE.JS</span>
+                            <span class="text-[10px] border border-white/30 px-2 py-1">WEBGL</span>
+                        </div>
+                    </article>
+
+                    <!-- Item 3 -->
+                    <article class="group">
+                        <div class="relative aspect-video bg-gray-900 border border-white/10 overflow-hidden mb-4">
+                            <img src="https://images.unsplash.com/photo-1558655146-d09347e0b7a9?q=80&w=2070&auto=format&fit=crop" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                        </div>
+                        <h3 class="font-bebas text-3xl mb-2">MUSIC FESTIVAL 2024</h3>
+                        <p class="text-sm text-gray-400 font-sans leading-relaxed">
+                            大型音楽フェスの特設サイト。チケット販売システムとの連携および、タイムテーブルのリアルタイム更新機能を実装。
+                        </p>
+                        <div class="mt-4 flex gap-2">
+                            <span class="text-[10px] border border-white/30 px-2 py-1">VUE.JS</span>
+                            <span class="text-[10px] border border-white/30 px-2 py-1">FIREBASE</span>
+                        </div>
+                    </article>
+
+                    <!-- Item 4 -->
+                    <article class="group mt-0 md:mt-20">
+                        <div class="relative aspect-video bg-gray-900 border border-white/10 overflow-hidden mb-4">
+                            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                        </div>
+                        <h3 class="font-bebas text-3xl mb-2">AI DASHBOARD UI</h3>
+                        <p class="text-sm text-gray-400 font-sans leading-relaxed">
+                            AI解析ツールの管理画面UIデザインおよび実装。複雑なパラメータ設定を直感的に操作できるインターフェースを設計。
+                        </p>
+                        <div class="mt-4 flex gap-2">
+                            <span class="text-[10px] border border-white/30 px-2 py-1">REACT</span>
+                            <span class="text-[10px] border border-white/30 px-2 py-1">TAILWIND</span>
+                        </div>
+                    </article>
+                </div>
+                
+                <!-- Footer within floor -->
+                <div class="mt-20 pt-10 border-t border-white/10 text-center text-xs text-gray-600 font-mono">
+                    END OF FLOOR 02
+                </div>
+            </div>
+        </section>
+
+        <!-- FLOOR 03, 04, 05 省略 (構造は同じ) -->
+        <section id="floor-3" class="floor-container hidden">
+            <div class="pt-32 px-6 h-full flex items-center justify-center">
+                <h2 class="font-bebas text-6xl text-gray-500">FLOOR 03: LAB (UNDER CONSTRUCTION)</h2>
+            </div>
+        </section>
+        <section id="floor-4" class="floor-container hidden">
+            <div class="pt-32 px-6 h-full flex items-center justify-center">
+                <h2 class="font-bebas text-6xl text-gray-500">FLOOR 04: ARCHIVE (UNDER CONSTRUCTION)</h2>
+            </div>
+        </section>
+        <section id="floor-5" class="floor-container hidden">
+             <div class="pt-32 px-6 pb-20 max-w-4xl mx-auto h-full flex flex-col justify-center">
+                <div class="border-2 border-white p-2 relative">
+                    <!-- Ticket Design Shape -->
+                    <div class="absolute top-1/2 -left-3 w-6 h-6 bg-[#050505] rounded-full border-r-2 border-white"></div>
+                    <div class="absolute top-1/2 -right-3 w-6 h-6 bg-[#050505] rounded-full border-l-2 border-white"></div>
+                    
+                    <div class="border border-white/20 p-8 lg:p-12 bg-[#101010]">
+                        <h2 class="font-bebas text-6xl mb-2 text-brand-accent">RECEPTION</h2>
+                        <form class="space-y-6 mt-8">
+                            <input type="text" class="w-full bg-black border border-white/30 p-3 text-white font-sans" placeholder="NAME">
+                            <input type="email" class="w-full bg-black border border-white/30 p-3 text-white font-sans" placeholder="EMAIL">
+                            <textarea rows="4" class="w-full bg-black border border-white/30 p-3 text-white font-sans" placeholder="MESSAGE"></textarea>
+                            <button type="button" class="w-full bg-white text-black font-bebas text-xl py-4 hover:bg-brand-accent hover:text-white transition-colors">SEND</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Menu Overlay -->
+    <div id="menu-overlay" class="fixed inset-0 bg-black/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-500 flex items-center justify-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 w-full max-w-6xl h-full p-10">
+            <div class="hidden md:flex flex-col justify-center border-r border-white/10 pr-10">
+                <div id="menu-image-preview" class="w-full aspect-video bg-gray-900 border border-white/20 overflow-hidden relative">
+                    <img id="menu-img" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover opacity-50 grayscale transition-all duration-500">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                         <span id="menu-preview-text" class="font-bebas text-6xl text-white mix-blend-overlay">ENTRANCE</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col justify-center pl-0 md:pl-10 space-y-2">
+                <button class="menu-item text-left font-bebas text-6xl md:text-8xl text-gray-600 hover:text-white transition-colors duration-300 group" data-target="1" data-img="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop">
+                    <span class="text-sm font-sans tracking-widest block opacity-0 group-hover:opacity-100 transition-opacity text-brand-accent mb-[-10px] ml-1">01</span>
+                    ENTRANCE
+                </button>
+                <button class="menu-item text-left font-bebas text-6xl md:text-8xl text-gray-600 hover:text-white transition-colors duration-300 group" data-target="2" data-img="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop">
+                    <span class="text-sm font-sans tracking-widest block opacity-0 group-hover:opacity-100 transition-opacity text-brand-accent mb-[-10px] ml-1">02</span>
+                    OFFICE
+                </button>
+                <button class="menu-item text-left font-bebas text-6xl md:text-8xl text-gray-600 hover:text-white transition-colors duration-300 group" data-target="3" data-img="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop">
+                    <span class="text-sm font-sans tracking-widest block opacity-0 group-hover:opacity-100 transition-opacity text-brand-accent mb-[-10px] ml-1">03</span>
+                    LAB
+                </button>
+                <button class="menu-item text-left font-bebas text-6xl md:text-8xl text-gray-600 hover:text-white transition-colors duration-300 group" data-target="4" data-img="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop">
+                    <span class="text-sm font-sans tracking-widest block opacity-0 group-hover:opacity-100 transition-opacity text-brand-accent mb-[-10px] ml-1">04</span>
+                    ARCHIVE
+                </button>
+                <button class="menu-item text-left font-bebas text-6xl md:text-8xl text-gray-600 hover:text-white transition-colors duration-300 group" data-target="5" data-img="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop">
+                    <span class="text-sm font-sans tracking-widest block opacity-0 group-hover:opacity-100 transition-opacity text-brand-accent mb-[-10px] ml-1">05</span>
+                    RECEPTION
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Elevator Transition Elements -->
+    <div class="elevator-door elevator-door-left bg-gradient-to-r from-[#050505] to-[#111]"></div>
+    <div class="elevator-door elevator-door-right bg-gradient-to-l from-[#050505] to-[#111]"></div>
+    
+    <div class="floor-transit-indicator">
+        <span class="floor-transit-label">FLOOR</span>
+        <span id="floor-number-display">01</span>
+    </div>
+
+    <script>
+        // State
+        let currentFloor = 1;
+        let isAnimating = false;
+        let isMenuOpen = false;
+
+        // Elements
+        const menuBtn = document.getElementById('menu-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const menuItems = document.querySelectorAll('.menu-item');
+        const menuImg = document.getElementById('menu-img');
+        const menuPreviewText = document.getElementById('menu-preview-text');
+        const floorMarkers = document.querySelectorAll('.floor-marker');
+        
+        // --- Init Animation ---
+        window.addEventListener('load', () => {
+            // Initial Reveal
+            const tl = gsap.timeline();
+            
+            tl.to('.reveal-text', {
+                y: 0,
+                duration: 1.2,
+                ease: 'power4.out',
+                stagger: 0.1
+            })
+            .to('.reveal-item', {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.8,
+                ease: 'power3.out',
+                stagger: 0.1
+            }, "-=0.8");
+        });
+
+        // --- Navigation Logic ---
+        menuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                gsap.to(menuOverlay, { x: '0%', duration: 0.5, ease: 'power2.out' });
+                gsap.fromTo('.menu-item', 
+                    { x: 50, opacity: 0 },
+                    { x: 0, opacity: 1, duration: 0.4, stagger: 0.05, delay: 0.2, ease: 'power2.out' }
+                );
+            } else {
+                gsap.to(menuOverlay, { x: '100%', duration: 0.5, ease: 'power2.in' });
+            }
+        });
+
+        menuItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const imgUrl = item.dataset.img;
+                const text = item.textContent.replace(/\d+/g, '').trim(); 
+                gsap.to(menuImg, { opacity: 0, duration: 0.2, onComplete: () => {
+                    menuImg.src = imgUrl;
+                    gsap.to(menuImg, { opacity: 0.5, duration: 0.3 });
+                }});
+                menuPreviewText.textContent = text;
+            });
+            item.addEventListener('click', () => {
+                const targetFloor = parseInt(item.dataset.target);
+                if (targetFloor !== currentFloor) {
+                    goToFloor(targetFloor);
+                }
+                isMenuOpen = false;
+                gsap.to(menuOverlay, { x: '100%', duration: 0.5, delay: 0.2, ease: 'power2.in' });
+            });
+        });
+
+        // --- Elevator Transition Core ---
+        function goToFloor(targetFloor) {
+            if (isAnimating || targetFloor === currentFloor) return;
+            isAnimating = true;
+
+            const floorDisplay = document.getElementById('floor-number-display');
+            const currentSection = document.getElementById(`floor-${currentFloor}`);
+            const targetSection = document.getElementById(`floor-${targetFloor}`);
+
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    isAnimating = false;
+                    currentFloor = targetFloor;
+                    updateIndicators(currentFloor);
+                    // Reset scroll position of new floor
+                    targetSection.scrollTop = 0;
+                }
+            });
+
+            tl.to('.elevator-door', { scaleX: 1, duration: 0.8, ease: 'expo.inOut' })
+            .add(() => {
+                currentSection.classList.add('hidden');
+                gsap.set('.floor-transit-indicator', { opacity: 1 });
+            })
+            .to(floorDisplay, {
+                innerText: targetFloor,
+                duration: 1.0,
+                snap: { innerText: 1 },
+                onUpdate: function() {
+                    const val = Math.round(this.targets()[0].innerText);
+                    floorDisplay.innerText = val.toString().padStart(2, '0');
+                },
+                ease: 'power1.inOut'
+            })
+            .add(() => {
+                targetSection.classList.remove('hidden');
+                // Reset animations
+                gsap.set(`#floor-${targetFloor} .reveal-text`, { y: '110%' });
+                gsap.set(`#floor-${targetFloor} .reveal-item`, { opacity: 0, y: 20 });
+            })
+            .to('.floor-transit-indicator', { opacity: 0, duration: 0.2 })
+            .to('.elevator-door', { scaleX: 0, duration: 0.8, ease: 'expo.inOut' })
+            .to(`#floor-${targetFloor} .reveal-text`, {
+                y: 0,
+                duration: 1.0,
+                ease: 'power4.out',
+                stagger: 0.1
+            }, "-=0.4")
+            .to(`#floor-${targetFloor} .reveal-item`, {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+                stagger: 0.1
+            }, "-=0.8");
+        }
+
+        function updateIndicators(floor) {
+            floorMarkers.forEach(m => {
+                m.classList.remove('text-white');
+                m.classList.add('text-gray-500');
+                if(parseInt(m.dataset.floor) === floor) {
+                    m.classList.add('text-white');
+                    m.classList.remove('text-gray-500');
+                }
+            });
+        }
+        
+        floorMarkers.forEach(marker => {
+            marker.addEventListener('click', () => {
+                goToFloor(parseInt(marker.dataset.floor));
+            });
+        });
+    </script>
+</body>
+</html>
+
+
