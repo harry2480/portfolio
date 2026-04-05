@@ -1,23 +1,25 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 
 interface MenuOverlayProps {
   isOpen: boolean;
   onClose: () => void;
-  onFloorSelect: (floor: number) => void;
+  onFloorSelect?: (floor: number) => void;
 }
 
 const FLOORS = [
-  { id: 1, label: '01', name: 'ENTRANCE', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop' },
-  { id: 2, label: '02', name: 'OFFICE', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop' },
-  { id: 3, label: '03', name: 'LAB', img: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop' },
-  { id: 4, label: '04', name: 'ARCHIVE', img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop' },
-  { id: 5, label: '05', name: 'RECEPTION', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop' },
+  { id: 1, label: '01', name: 'ENTRANCE', path: '/', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop' },
+  { id: 2, label: '02', name: 'OFFICE', path: '/office', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop' },
+  { id: 3, label: '03', name: 'LAB', path: '/lab', img: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop' },
+  { id: 4, label: '04', name: 'ARCHIVE', path: '/archive', img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop' },
+  { id: 5, label: '05', name: 'BLOG', path: '/blog', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop' },
 ];
 
 export default function MenuOverlay({ isOpen, onClose, onFloorSelect }: MenuOverlayProps) {
+  const router = useRouter()
   const [previewFloor, setPreviewFloor] = useState(FLOORS[0]);
 
   useEffect(() => {
@@ -76,8 +78,9 @@ export default function MenuOverlay({ isOpen, onClose, onFloorSelect }: MenuOver
     }
   };
 
-  const handleFloorClick = (floorId: number) => {
-    onFloorSelect(floorId);
+  const handleFloorClick = (floor: typeof FLOORS[0]) => {
+    router.push(floor.path)
+    onFloorSelect?.(floor.id);
   };
 
   return (
@@ -113,7 +116,7 @@ export default function MenuOverlay({ isOpen, onClose, onFloorSelect }: MenuOver
               className="menu-item text-left font-bebas text-6xl md:text-8xl text-gray-600 hover:text-white transition-colors duration-300 group cursor-pointer"
               onMouseEnter={() => handleFloorHover(floor)}
               onClick={() => {
-                handleFloorClick(floor.id);
+                handleFloorClick(floor);
                 onClose();
               }}
             >

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import GlobalFloorLinks from '@/components/GlobalFloorLinks'
+import GlobalHeader from '@/components/GlobalHeader'
 
 export const metadata: Metadata = {
   title: 'PORTFOLIO | BMSG FES \'24 STYLE',
@@ -21,7 +23,9 @@ export default function RootLayout({
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
       </head>
       <body className="antialiased">
+        <GlobalHeader />
         {children}
+        <GlobalFloorLinks />
       </body>
     </html>
   )

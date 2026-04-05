@@ -1,23 +1,25 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import gsap from 'gsap'
 
 interface MenuProps {
   isOpen: boolean
   onClose: () => void
-  onFloorSelect: (floor: number) => void
+  onFloorSelect?: (floor: number) => void
 }
 
 const menuItems = [
-  { floor: 1, label: 'ENTRANCE', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop' },
-  { floor: 2, label: 'OFFICE', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop' },
-  { floor: 3, label: 'LAB', img: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop' },
-  { floor: 4, label: 'ARCHIVE', img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop' },
-  { floor: 5, label: 'RECEPTION', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop' },
+  { floor: 1, label: 'ENTRANCE', path: '/', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop' },
+  { floor: 2, label: 'OFFICE', path: '/office', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop' },
+  { floor: 3, label: 'LAB', path: '/lab', img: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop' },
+  { floor: 4, label: 'ARCHIVE', path: '/archive', img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop' },
+  { floor: 5, label: 'BLOG', path: '/blog', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop' },
 ]
 
 const Menu: React.FC<MenuProps> = ({ isOpen, onClose, onFloorSelect }) => {
+  const router = useRouter()
   const [selectedLabel, setSelectedLabel] = useState('ENTRANCE')
   const [selectedImg, setSelectedImg] = useState(menuItems[0].img)
 
@@ -86,7 +88,11 @@ const Menu: React.FC<MenuProps> = ({ isOpen, onClose, onFloorSelect }) => {
               key={item.floor}
               className="menu-item text-left font-bebas text-6xl md:text-8xl text-gray-600 hover:text-white transition-colors duration-300 group"
               onMouseEnter={() => handleItemHover(item)}
-              onClick={() => { onFloorSelect(item.floor); onClose() }}
+              onClick={() => { 
+                router.push(item.path)
+                onFloorSelect?.(item.floor)
+                onClose() 
+              }}
             >
               <span className="text-sm font-sans tracking-widest block opacity-0 group-hover:opacity-100 transition-opacity text-brand-accent mb-[-10px] ml-1">
                 {item.floor.toString().padStart(2, '0')}

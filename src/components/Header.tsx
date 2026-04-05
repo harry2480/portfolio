@@ -1,23 +1,29 @@
 'use client'
 
 import React from 'react'
+import { useRouter } from 'next/navigation'
 
 interface HeaderProps {
   onMenuToggle: () => void
-  onFloorClick: (floor: number) => void
+  onFloorClick?: (floor: number) => void
 }
 
 const Header: React.FC<HeaderProps> = ({ onMenuToggle, onFloorClick }) => {
+  const router = useRouter()
+  
   return (
     <header className="fixed top-0 left-0 w-full z-40 px-6 py-6 flex justify-between items-start mix-blend-difference text-white pointer-events-none">
       <div className="flex flex-col pointer-events-auto">
         <h1 
           className="font-bebas text-4xl leading-none tracking-widest cursor-pointer hover:text-brand-accent transition-colors"
-          onClick={() => onFloorClick(1)}
+          onClick={() => {
+            router.push('/')
+            onFloorClick?.(1)
+          }}
         >
-          BUILDING
+          HARRY
         </h1>
-        <span className="text-xs font-sans tracking-[0.3em] opacity-70">ENTRANCE SYSTEM</span>
+        <span className="text-xs font-sans tracking-[0.3em] opacity-70">PORTFOLIO SITE</span>
       </div>
       
       <button 

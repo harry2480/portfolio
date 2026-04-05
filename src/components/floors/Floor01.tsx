@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import gsap from 'gsap'
+import { AccessCard } from '../AccessCard'
 
-const Floor01: React.FC<{ onFloorSelect: (floor: number) => void }> = ({ onFloorSelect }) => {
-  const [isHovering, setIsHovering] = useState(false)
-
+const Floor01: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloorSelect }) => {
+  const router = useRouter()
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -32,24 +33,6 @@ const Floor01: React.FC<{ onFloorSelect: (floor: number) => void }> = ({ onFloor
 
 
 
-  useEffect(() => {
-    let ctx = gsap.context(() => {
-      if (isHovering) {
-        const tl = gsap.timeline({ repeat: -1 });
-        tl.fromTo('.scan-line', 
-          { top: '0%', opacity: 0 },
-          { top: '5%', opacity: 1, duration: 0.1, ease: 'none' }
-        )
-        .to('.scan-line', 
-          { top: '95%', opacity: 1, duration: 1.3, ease: 'none' }
-        )
-        .to('.scan-line', 
-          { top: '100%', opacity: 0, duration: 0.1, ease: 'none' }
-        );
-      }
-    })
-    return () => ctx.revert()
-  }, [isHovering])
 
   return (
     <section className="floor-container">
@@ -60,12 +43,11 @@ const Floor01: React.FC<{ onFloorSelect: (floor: number) => void }> = ({ onFloor
       </div>
 
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
-        <div className="entrance-panel w-full max-w-5xl p-8 rounded-md">
         {/* Building Signage */}
         <div className="text-center mb-12">
           <div ref={containerRef} className="reveal-text-container">
             <h2 className="reveal-text font-bebas text-[15vw] md:text-[10rem] leading-[0.8] tracking-tight opacity-100">
-              TOKYO<br />HQ
+              HARRY<br />PORTFOLIO
             </h2>
           </div>
           <div className="mt-4 flex flex-col items-center gap-2">
@@ -76,50 +58,15 @@ const Floor01: React.FC<{ onFloorSelect: (floor: number) => void }> = ({ onFloor
           </div>
         </div>
 
-        {/* Access Card */}
-        <div 
-          className="access-card relative w-full max-w-md p-8 rounded-sm backdrop-blur-md reveal-item opacity-0 translate-y-8 transform transition-all duration-500 hover:border-white/50 group cursor-pointer overflow-hidden mx-auto"
-          onClick={() => onFloorSelect(2)}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
-          <div className="flex justify-between items-start mb-12">
-            <div className="flex flex-col">
-              <span className="text-[10px] font-sans text-gray-400 tracking-widest mb-1">VISITOR PASS</span>
-              <span className="font-bebas text-2xl tracking-wide text-white">ACCESS GRANTED</span>
-            </div>
-            <div className="w-8 h-8 border border-white/30 rounded-full flex items-center justify-center">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            </div>
-          </div>
-          
-          <div className="flex items-end justify-between">
-            <div className="font-mono text-xs text-gray-500">ID: GUEST-001</div>
-            <div className="flex items-center gap-3">
-              <span className="font-bebas text-xl tracking-widest group-hover:text-brand-accent transition-colors">TOUCH TO ENTER</span>
-              <span className="text-xl transform group-hover:translate-x-1 transition-transform">→</span>
-            </div>
-          </div>
-          
-          {/* Scan line effect */}
-          {isHovering && (
-            <div 
-              className="scan-line absolute left-0 right-0 h-[2px] z-20 pointer-events-none"
-              style={{
-                background: 'linear-gradient(to right, transparent, #FF0033 15%, #FF0033 85%, transparent)',
-                boxShadow: '0 0 12px 2px rgba(255, 0, 51, 0.7)',
-                filter: 'blur(0.5px)'
-              }}
-            />
-          )}
-        </div>
-
+        <AccessCard onClick={() => {
+          router.push('/office')
+          onFloorSelect?.(2)
+        }} />
         {/* Scroll Indicator */}
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
           <span className="text-[10px] tracking-widest font-sans">SCROLL TO EXPLORE</span>
           <div className="w-[1px] h-12 bg-gray-600" />
         </div>
-      </div>
       </div>
 
       {/* Additional Content */}
@@ -129,12 +76,12 @@ const Floor01: React.FC<{ onFloorSelect: (floor: number) => void }> = ({ onFloor
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans text-sm text-gray-400 leading-relaxed">
             <div>
               <p className="mb-4">
-                本サイトは、Webエンジニアのポートフォリオを「架空の自社ビル」に見立てて構成しています。
+                本サイトは、ポートフォリオサイトを架空の自社ビルに見立てて構成しています。
                 エレベーターを使って各フロア（ページ）へアクセスしてください。
               </p>
               <p>
                 圧倒的な没入感と、機能的なアクセシビリティの両立を目指しました。
-                スクロールすることで、建物の詳細情報や隠されたコンテンツを発見できます。
+                スクロールすることで、建物の詳細情報や隠されたコンテンツを見ることができます。
               </p>
             </div>
             <div>
@@ -148,8 +95,8 @@ const Floor01: React.FC<{ onFloorSelect: (floor: number) => void }> = ({ onFloor
                   技術スタック・実験的コードの保管庫
                 </li>
                 <li>
-                  <span className="block text-white font-bold text-xs mb-1">FLOOR 05: RECEPTION</span>
-                  お問い合わせ・コンタクトフォーム
+                  <span className="block text-white font-bold text-xs mb-1">FLOOR 05: BLOG</span>
+                  技術ブログ・記事一覧
                 </li>
               </ul>
             </div>

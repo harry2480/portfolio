@@ -1,11 +1,9 @@
-'use client'
+export const metadata = {
+  title: 'Archive | Portfolio Building',
+  description: 'About and experience'
+}
 
-import React from 'react'
-import { useRouter } from 'next/navigation'
-
-const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloorSelect }) => {
-  const router = useRouter()
-  
+export default function ArchivePage() {
   return (
     <section className="floor-container">
       <div className="pt-32 px-6 pb-20 max-w-4xl mx-auto">
@@ -18,8 +16,10 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
           <div>
             <h3 className="font-bebas text-2xl text-white mb-4">CONCEPT</h3>
             <p>
-              私の制作スタンスは、プロダクト思考と技術のバランスを重視することです。
-              デザインとパフォーマンスを両立させたインタラクティブな体験作りを得意としています。
+              Webエンジニアとしての私の価値は、単なるコード実装ではなく、
+              ビジネスと技術の仲介者として機能することにあります。
+              デザイン思考、ユーザー中心主義、そして最新の技術トレンドを
+              組み合わせた、包括的なソリューション提供を得意としています。
             </p>
           </div>
 
@@ -31,30 +31,24 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
                 <p className="text-white">Senior Frontend Engineer @ Tech Company</p>
                 <p className="text-xs mt-2">React, TypeScript, Design Systems の構築と運用</p>
               </div>
-
               <div>
                 <p className="text-white font-bold text-xs mb-1">2020 - 2022</p>
                 <p className="text-white">Full Stack Developer @ Startup</p>
                 <p className="text-xs mt-2">Next.js, Node.js, AWS を用いた MVP 構築</p>
               </div>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="font-bebas text-2xl text-white mb-4">CONTACT</h3>
-            <p>技術記事や開発ノウハウについては、BLOG セクションで詳しく解説しています。</p>
-            <div className="mt-6">
-              <button onClick={() => { router.push('/blog'); onFloorSelect?.(5) }} className="bg-white text-black px-6 py-3 font-bebas">GO TO BLOG</button>
+              <div>
+                <p className="text-white font-bold text-xs mb-1">2018 - 2020</p>
+                <p className="text-white">Junior Web Developer @ Agency</p>
+                <p className="text-xs mt-2">WordPress, PHP, jQuery での Web 制作</p>
+              </div>
             </div>
           </div>
         </div>
 
         <div className="mt-20 pt-10 border-t border-white/10 text-center text-xs text-gray-600 font-mono">
-          END OF FLOOR 04
+          END OF ARCHIVE
         </div>
       </div>
     </section>
   )
 }
-
-export default Floor04

@@ -116,11 +116,40 @@ Tailwind CSS は Utility-first の CSS フレームワークです。
 /**
  * すべての記事を取得（公開済みのみ）
  */
+import fs from 'fs'
+import path from 'path'
+import matter from 'gray-matter'
+
 export async function getAllPosts(): Promise<Post[]> {
-  // 本運用時: Velite の生成型から import
-  // import { posts } from '#content'
-  const allPosts = getDummyPosts()
-  return allPosts.filter((post) => post.published && !post.draft)
+  const postsDir = path.join(process.cwd(), 'src', 'content', 'blog')
+  const files = fs.readdirSync(postsDir)
+
+  const posts: Post[] = files
+    .filter((f) => f.endsWith('.md') || f.endsWith('.mdx'))
+    .map((fileName) => {
+      const slug = fileName.replace(/\.(md|mdx)$/, '')
+      const fullPath = path.join(postsDir, fileName)
+      const raw = fs.readFileSync(fullPath, 'utf-8')
+      const { data, content } = matter(raw)
+
+      const post: Post = {
+        slug,
+        title: String(data.title || slug),
+        description: String(data.excerpt || data.description || ''),
+        date: String(data.date || ''),
+        tags: Array.isArray(data.tags) ? data.tags : [],
+        author: data.author || 'ハリー',
+        published: data.published === undefined ? true : Boolean(data.published),
+        content,
+        readingTime: calculateReadingTime(content),
+      }
+
+      return post
+    })
+
+  // 日付降順
+  posts.sort((a, b) => (a.date < b.date ? 1 : -1))
+  return posts.filter((p) => p.published && !p.draft)
 }
 
 /**

@@ -10,7 +10,7 @@ const FLOORS = [
   { id: 2, label: '02 OFFICE' },
   { id: 3, label: '03 LAB' },
   { id: 4, label: '04 ARCHIVE' },
-  { id: 5, label: '05 RECEPTION' },
+  { id: 5, label: '05 BLOG' },
 ];
 
 export default function FloorSidebar({ currentFloor, onFloorSelect }: FloorSidebarProps) {
