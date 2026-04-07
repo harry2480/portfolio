@@ -4,7 +4,6 @@ import { useState } from 'react'
 import Header from './Header'
 import Menu from './Menu.tsx'
 import FloorIndicator from './FloorIndicator.tsx'
-import ElevatorDoors from './ElevatorDoors'
 import FloorsLayout from './FloorsLayout'
 import { useFloorNavigation } from '@/hooks/useFloorNavigation'
 import CodeBackground from './CodeBackground'
@@ -43,9 +42,6 @@ export const Building: React.FC = () => {
 
       {/* Floors Layout */}
       <FloorsLayout currentFloor={currentFloor} onFloorSelect={goToFloor} />
-
-      {/* Elevator Doors */}
-      <ElevatorDoors currentFloor={currentFloor} />
     </main>
   )
 }

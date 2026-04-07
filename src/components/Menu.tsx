@@ -11,16 +11,16 @@ interface MenuProps {
 }
 
 const menuItems = [
-  { floor: 1, label: 'ENTRANCE', path: '/', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop' },
-  { floor: 2, label: 'OFFICE', path: '/office', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop' },
-  { floor: 3, label: 'LAB', path: '/lab', img: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop' },
-  { floor: 4, label: 'ARCHIVE', path: '/archive', img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop' },
-  { floor: 5, label: 'BLOG', path: '/blog', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop' },
+  { floor: 1, label: 'Entrance', path: '/', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop' },
+  { floor: 2, label: 'Works', path: '/works', img: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop' },
+  { floor: 3, label: 'Skill', path: '/skill', img: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop' },
+  { floor: 4, label: 'About', path: '/about', img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop' },
+  { floor: 5, label: 'Blog', path: '/blog', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop' },
 ]
 
 const Menu: React.FC<MenuProps> = ({ isOpen, onClose, onFloorSelect }) => {
   const router = useRouter()
-  const [selectedLabel, setSelectedLabel] = useState('ENTRANCE')
+  const [selectedLabel, setSelectedLabel] = useState('Entrance')
   const [selectedImg, setSelectedImg] = useState(menuItems[0].img)
 
   useEffect(() => {
@@ -45,15 +45,38 @@ const Menu: React.FC<MenuProps> = ({ isOpen, onClose, onFloorSelect }) => {
   }, [isOpen, onClose])
 
   const handleItemHover = (item: typeof menuItems[0]) => {
-    gsap.to('#menu-img', { 
-      opacity: 0, 
-      duration: 0.2, 
+    gsap.to('#menu-img', {
+      opacity: 0,
+      duration: 0.2,
       onComplete: () => {
         setSelectedImg(item.img)
         setSelectedLabel(item.label)
         gsap.to('#menu-img', { opacity: 0.5, duration: 0.3 })
       }
     })
+  }
+
+  const handleMenuItemClick = (item: typeof menuItems[0]) => {
+    onClose()
+
+    // Animate global elevator doors before navigation
+    const floorDisplay = document.getElementById('floor-number-display')
+
+    const tl = gsap.timeline()
+
+    tl.to('.elevator-overlay', { opacity: 1, duration: 0.01 })
+    .to('.elevator-door', { scaleX: 1, duration: 0.8, ease: 'expo.inOut' }, 0)
+      .add(() => {
+        // ドアが閉まった直後にナビゲーション→新しいページが読み込まれている間にドアが開く
+        router.push(item.path)
+        gsap.set('.floor-transit-indicator', { opacity: 1 })
+        if (floorDisplay) {
+          floorDisplay.innerText = item.floor.toString().padStart(2, '0')
+        }
+      })
+      .to('.floor-transit-indicator', { opacity: 0, duration: 0.4 })
+      .to('.elevator-door', { scaleX: 0, duration: 0.8, ease: 'expo.inOut' })
+      .to('.elevator-overlay', { opacity: 0, duration: 0.4 })
   }
 
   return (
@@ -74,7 +97,7 @@ const Menu: React.FC<MenuProps> = ({ isOpen, onClose, onFloorSelect }) => {
               className="w-full h-full object-cover opacity-50 grayscale transition-all duration-500"
             />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-bebas text-6xl text-white mix-blend-overlay">
+              <span className="font-oswald text-6xl text-white mix-blend-overlay">
                 {selectedLabel}
               </span>
             </div>
@@ -86,13 +109,9 @@ const Menu: React.FC<MenuProps> = ({ isOpen, onClose, onFloorSelect }) => {
           {menuItems.map((item) => (
             <button
               key={item.floor}
-              className="menu-item text-left font-bebas text-6xl md:text-8xl text-gray-600 hover:text-white transition-colors duration-300 group"
+              className="menu-item text-left font-oswald text-6xl md:text-8xl text-gray-600 hover:text-white transition-colors duration-300 group"
               onMouseEnter={() => handleItemHover(item)}
-              onClick={() => { 
-                router.push(item.path)
-                onFloorSelect?.(item.floor)
-                onClose() 
-              }}
+              onClick={() => handleMenuItemClick(item)}
             >
               <span className="text-sm font-sans tracking-widest block opacity-0 group-hover:opacity-100 transition-opacity text-brand-accent mb-[-10px] ml-1">
                 {item.floor.toString().padStart(2, '0')}

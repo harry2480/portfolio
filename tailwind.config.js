@@ -1,15 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 const config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
       fontFamily: {
-        'bebas': ['"Bebas Neue"', 'sans-serif'],
-        'sans': ['"Noto Sans JP"', 'sans-serif'],
+        'sans': ['"Noto Sans JP"', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', '"Helvetica Neue"', 'Arial'],
+        'oswald': ['Oswald', '"Noto Sans JP"', 'sans-serif'],
+        'inter': ['Inter', '"Noto Sans JP"', 'sans-serif'],
+        'archivo': ['"Archivo Narrow"', '"Noto Sans JP"', 'sans-serif'],
+        'playfair': ['"Playfair Display"', '"Noto Sans JP"', 'serif'],
+        'poppins': ['Poppins', '"Noto Sans JP"', 'sans-serif'],
       },
       colors: {
         brand: {
@@ -27,4 +30,4 @@ const config = {
   },
   plugins: [],
 }
-export default config 
+module.exports = config 

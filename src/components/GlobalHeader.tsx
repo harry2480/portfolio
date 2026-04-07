@@ -7,9 +7,9 @@ import { usePathname, useRouter } from 'next/navigation'
 
 const floorToPath: Record<number, string> = {
   1: '/',
-  2: '/office',
-  3: '/lab',
-  4: '/archive',
+  2: '/works',
+  3: '/skill',
+  4: '/about',
   5: '/blog',
 }
 

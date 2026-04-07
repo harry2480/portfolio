@@ -8,16 +8,16 @@ interface FloorIndicatorProps {
 }
 
 const floorLabels = [
-  { id: 1, label: '01 ENTRANCE' },
-  { id: 2, label: '02 OFFICE' },
-  { id: 3, label: '03 LAB' },
-  { id: 4, label: '04 ARCHIVE' },
-  { id: 5, label: '05 BLOG' },
+  { id: 1, label: '01 Entrance' },
+  { id: 2, label: '02 Works' },
+  { id: 3, label: '03 Skill' },
+  { id: 4, label: '04 About' },
+  { id: 5, label: '05 Blog' },
 ]
 
 const FloorIndicator: React.FC<FloorIndicatorProps> = ({ currentFloor, onFloorClick }) => {
   return (
-    <aside className="fixed left-6 bottom-10 z-30 hidden md:flex flex-col gap-2 font-bebas text-sm text-gray-500">
+    <aside className="fixed left-6 bottom-10 z-30 hidden md:flex flex-col gap-2 font-oswald text-sm text-gray-500">
       {floorLabels.map((floor) => (
         <div
           key={floor.id}

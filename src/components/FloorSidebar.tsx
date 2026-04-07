@@ -6,16 +6,16 @@ interface FloorSidebarProps {
 }
 
 const FLOORS = [
-  { id: 1, label: '01 ENTRANCE' },
-  { id: 2, label: '02 OFFICE' },
-  { id: 3, label: '03 LAB' },
-  { id: 4, label: '04 ARCHIVE' },
-  { id: 5, label: '05 BLOG' },
+  { id: 1, label: '01 Entrance' },
+  { id: 2, label: '02 Works' },
+  { id: 3, label: '03 Skill' },
+  { id: 4, label: '04 About' },
+  { id: 5, label: '05 Blog' },
 ];
 
 export default function FloorSidebar({ currentFloor, onFloorSelect }: FloorSidebarProps) {
   return (
-    <aside className="hidden md:flex fixed left-6 bottom-10 z-30 flex-col gap-2 font-bebas text-sm text-gray-500">
+    <aside className="hidden md:flex fixed left-6 bottom-10 z-30 flex-col gap-2 font-oswald text-sm text-gray-500">
       {FLOORS.map((floor) => (
         <div
           key={floor.id}

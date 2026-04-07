@@ -3,20 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "fetch-repos": "node scripts/fetch-repos.js",
+    "dev": "npm run fetch-repos && next dev",
+    "build": "npm run fetch-repos && next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-slot": "^1.2.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
     "gsap": "^3.12.2",
+    "lucide-react": "^1.7.0",
     "next": "^14.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^16.1.0",
     "remark-gfm": "^4.0.1",
+    "tailwind-merge": "^3.5.0",
     "typescript": "^5.3.3"
   },
   "devDependencies": {

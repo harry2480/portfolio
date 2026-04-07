@@ -54,7 +54,7 @@ export function AccessCard({ onClick }: AccessCardProps) {
       <div className="flex justify-between items-start mb-12">
         <div className="flex flex-col">
           <span className="text-[10px] font-sans text-gray-400 tracking-widest mb-1 uppercase">VISITOR PASS</span>
-          <span className="font-bebas text-2xl tracking-wide text-white uppercase">ACCESS GRANTED</span>
+          <span className="font-oswald text-2xl tracking-wide text-white uppercase">ACCESS GRANTED</span>
         </div>
         <div className="border border-white/30 rounded-full flex items-center justify-center" style={{ width: '32px', height: '32px' }}>
           <div className="rounded-full animate-pulse bg-green-500" style={{ width: '8px', height: '8px' }} />
@@ -65,7 +65,7 @@ export function AccessCard({ onClick }: AccessCardProps) {
       <div className="flex items-end justify-between">
         <div className="font-mono text-xs text-gray-500">ID: GUEST-001</div>
         <div className="flex items-center gap-3">
-          <span className="font-bebas text-xl tracking-widest group-hover:text-brand-accent transition-colors">TOUCH TO ENTER</span>
+          <span className="font-oswald text-xl tracking-widest group-hover:text-brand-accent transition-colors">TOUCH TO ENTER</span>
           <span className="text-xl transform group-hover:translate-x-1 transition-transform">→</span>
         </div>
       </div>

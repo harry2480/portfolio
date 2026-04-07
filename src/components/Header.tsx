@@ -15,15 +15,16 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle, onFloorClick }) => {
     <header className="fixed top-0 left-0 w-full z-40 px-6 py-6 flex justify-between items-start mix-blend-difference text-white pointer-events-none">
       <div className="flex flex-col pointer-events-auto">
         <h1 
-          className="font-bebas text-4xl leading-none tracking-widest cursor-pointer hover:text-brand-accent transition-colors"
+          className="text-4xl leading-none tracking-widest cursor-pointer hover:text-brand-accent transition-colors lowercase"
+          style={{ fontFamily: 'Bebas Neue, "Noto Sans JP", sans-serif' }}
           onClick={() => {
             router.push('/')
             onFloorClick?.(1)
           }}
         >
-          HARRY
+          Harry
         </h1>
-        <span className="text-xs font-sans tracking-[0.3em] opacity-70">PORTFOLIO SITE</span>
+        <span className="text-xs font-sans tracking-[0.3em] opacity-70">Portfolio Site</span>
       </div>
       
       <button 
@@ -35,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle, onFloorClick }) => {
         <span className="w-10 h-[2px] bg-white transition-all duration-300 group-hover:w-8" />
         <span className="w-6 h-[2px] bg-white transition-all duration-300 group-hover:w-10" />
         <span className="w-8 h-[2px] bg-white transition-all duration-300 group-hover:w-6" />
-        <span className="text-[10px] font-bebas tracking-widest mt-1">MENU</span>
+        <span className="text-[10px] font-oswald tracking-widest mt-1">Menu</span>
       </button>
     </header>
   )

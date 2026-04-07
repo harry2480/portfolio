@@ -11,7 +11,7 @@ const floorLabels = [
   { id: 1, label: '01 ENTRANCE' },
   { id: 2, label: '02 OFFICE' },
   { id: 3, label: '03 LAB' },
-  { id: 4, label: '04 ARCHIVE' },
+  { id: 4, label: '04 ABOUT' },
   { id: 5, label: '05 RECEPTION' },
 ]
 

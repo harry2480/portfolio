@@ -11,11 +11,11 @@ interface MenuOverlayProps {
 }
 
 const FLOORS = [
-  { id: 1, label: '01', name: 'ENTRANCE', path: '/', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop' },
-  { id: 2, label: '02', name: 'OFFICE', path: '/office', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop' },
-  { id: 3, label: '03', name: 'LAB', path: '/lab', img: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop' },
-  { id: 4, label: '04', name: 'ARCHIVE', path: '/archive', img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop' },
-  { id: 5, label: '05', name: 'BLOG', path: '/blog', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop' },
+  { id: 1, label: '01', name: 'Entrance', path: '/', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop' },
+  { id: 2, label: '02', name: 'Works', path: '/works', img: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop' },
+  { id: 3, label: '03', name: 'Skill', path: '/skill', img: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop' },
+  { id: 4, label: '04', name: 'About', path: '/about', img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop' },
+  { id: 5, label: '05', name: 'Blog', path: '/blog', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop' },
 ];
 
 export default function MenuOverlay({ isOpen, onClose, onFloorSelect }: MenuOverlayProps) {
@@ -101,7 +101,7 @@ export default function MenuOverlay({ isOpen, onClose, onFloorSelect }: MenuOver
               alt="" 
             />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span id="menu-preview-text" className="font-bebas text-6xl text-white mix-blend-overlay">
+              <span id="menu-preview-text" className="font-oswald text-6xl text-white mix-blend-overlay">
                 {previewFloor.name}
               </span>
             </div>
@@ -113,7 +113,7 @@ export default function MenuOverlay({ isOpen, onClose, onFloorSelect }: MenuOver
           {FLOORS.map((floor) => (
             <button
               key={floor.id}
-              className="menu-item text-left font-bebas text-6xl md:text-8xl text-gray-600 hover:text-white transition-colors duration-300 group cursor-pointer"
+              className="menu-item text-left font-oswald text-6xl md:text-8xl text-gray-600 hover:text-white transition-colors duration-300 group cursor-pointer"
               onMouseEnter={() => handleFloorHover(floor)}
               onClick={() => {
                 handleFloorClick(floor);

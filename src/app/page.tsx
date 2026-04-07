@@ -1,7 +1,7 @@
 import { Building } from '../components/Building'
 
 export const metadata = {
-  title: 'Portfolio Building | ENTRANCE',
+  title: 'harry.dev | Portfolio',
   description: 'Interactive portfolio building with elevator navigation'
 }
 

@@ -15,13 +15,10 @@ export const useFloorNavigation = (
     const floorDisplay = document.getElementById('floor-number-display')
     if (!floorDisplay) return
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setIsAnimating(false)
-      }
-    })
+    const tl = gsap.timeline()
 
-    tl.to('.elevator-door', { scaleX: 1, duration: 0.8, ease: 'expo.inOut' })
+    tl.to('.elevator-overlay', { opacity: 1, duration: 0.01 })
+    .to('.elevator-door', { scaleX: 1, duration: 0.8, ease: 'expo.inOut' }, 0)
     .add(() => {
       // ドアが閉まっている間にフロアを切り替えて、
       // ドアが開いた時に前の画面が一瞬見える問題を防ぎます。
@@ -38,8 +35,12 @@ export const useFloorNavigation = (
       },
       ease: 'power1.inOut'
     })
-    .to('.floor-transit-indicator', { opacity: 0, duration: 0.2 })
-    .to('.elevator-door', { scaleX: 0, duration: 0.8, ease: 'expo.inOut' }, "-=0.8")
+    .to('.floor-transit-indicator', { opacity: 0, duration: 0.4 })
+    .to('.elevator-door', { scaleX: 0, duration: 0.8, ease: 'expo.inOut' })
+    .add(() => {
+      setIsAnimating(false)
+    })
+    .to('.elevator-overlay', { opacity: 0, duration: 0.4 })
 
   }, [currentFloor, isAnimating, setCurrentFloor, setIsAnimating])
 

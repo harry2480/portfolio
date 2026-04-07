@@ -138,15 +138,15 @@ const Floor01: React.FC<Floor01Props> = ({ onEnter }) => {
             <div>
               <ul className="space-y-4 border-l border-white/20 pl-6">
                 <li>
-                  <span className="block text-white font-bold text-xs mb-1">FLOOR 02: OFFICE</span>
+                  <span className="block text-white font-bold text-xs mb-1">FLOOR 02: Works</span>
                   制作実績・プロジェクトの展示エリア
                 </li>
                 <li>
-                  <span className="block text-white font-bold text-xs mb-1">FLOOR 03: LAB</span>
+                  <span className="block text-white font-bold text-xs mb-1">FLOOR 03: Skill</span>
                   技術スタック・実験的コードの保管庫
                 </li>
                 <li>
-                  <span className="block text-white font-bold text-xs mb-1">FLOOR 05: RECEPTION</span>
+                  <span className="block text-white font-bold text-xs mb-1">FLOOR 05: Blog</span>
                   お問い合わせ・コンタクトフォーム
                 </li>
               </ul>

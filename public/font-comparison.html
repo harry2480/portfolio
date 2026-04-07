@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Font Comparison</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Oswald:wght@300;400;700&family=Archivo+Narrow:wght@300;400;700&family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;700&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg:#050505; --card:#0b0b0b; --muted:#9ca3af; --border:rgba(255,255,255,0.06); }
+    html,body{height:100%;}
+    body{background:var(--bg); color:#fff; font-family:'Noto Sans JP',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; margin:0; -webkit-font-smoothing:antialiased;}
+    .wrap{max-width:1100px;margin:48px auto;padding:32px}
+    h1{font-family:'Oswald','Noto Sans JP',sans-serif;letter-spacing:0.06em;margin:0 0 24px 0}
+    p.lead{color:var(--muted);margin:0 0 28px 0}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .card{background:var(--card);border:1px solid var(--border);padding:20px;border-radius:6px}
+    .label{font-size:12px;color:var(--muted);margin-bottom:8px}
+    .sample-h{font-size:36px;margin:6px 0}
+    .sample-p{color:#d1d5db;margin-top:8px}
+
+    /* font classes */
+    .font-oswald{font-family:'Oswald','Noto Sans JP',sans-serif}
+    .font-inter{font-family:'Inter','Noto Sans JP',sans-serif}
+    .font-archivo{font-family:'Archivo Narrow','Noto Sans JP',sans-serif}
+    .font-playfair{font-family:'Playfair Display','Noto Sans JP',serif}
+    .font-poppins{font-family:'Poppins','Noto Sans JP',sans-serif}
+
+    /* responsive */
+    @media (max-width:900px){.grid{grid-template-columns:1fr}.sample-h{font-size:28px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Font Comparison</h1>
+    <p class="lead">以下は同一テキストを各候補フォントで表示したサンプルです。気に入ったフォントを教えてください。</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="label">Oswald</div>
+        <div class="font-oswald">
+          <div class="sample-h">About</div>
+          <div class="sample-p">制限条件下で最適解を見つけ出すリソース配分能力と、チームのために動く姿勢。ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="label">Inter</div>
+        <div class="font-inter">
+          <div class="sample-h">About</div>
+          <div class="sample-p">制限条件下で最適解を見つけ出すリソース配分能力と、チームのために動く姿勢。ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="label">Archivo Narrow</div>
+        <div class="font-archivo">
+          <div class="sample-h">About</div>
+          <div class="sample-p">制限条件下で最適解を見つけ出すリソース配分能力と、チームのために動く姿勢。ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="label">Playfair Display</div>
+        <div class="font-playfair">
+          <div class="sample-h">About</div>
+          <div class="sample-p">制限条件下で最適解を見つけ出すリソース配分能力と、チームのために動く姿勢。ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</div>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column:1 / -1;">
+        <div class="label">Poppins</div>
+        <div class="font-poppins">
+          <div class="sample-h">About</div>
+          <div class="sample-p">制限条件下で最適解を見つけ出すリソース配分能力と、チームのために動く姿勢。ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="color:var(--muted);margin-top:22px;font-size:13px">Next.js 開発サーバーを使っている場合: <a href="/font-comparison.html" style="color:#9ca3af">/font-comparison.html</a> で表示できます。</p>
+  </div>
+</body>
+</html>

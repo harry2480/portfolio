@@ -33,13 +33,13 @@ const workItems = [
   }
 ]
 
-const Floor02: React.FC = () => {
+const Floor02: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloorSelect }) => {
   return (
     <section className="floor-container">
       <div className="pt-32 px-6 pb-20 max-w-7xl mx-auto">
         <div className="flex items-end justify-between mb-12 border-b border-white/20 pb-4">
-          <h2 className="font-bebas text-6xl lg:text-8xl">OFFICE / WORKS</h2>
-          <span className="font-sans text-xs tracking-widest mb-4">制作実績エリア</span>
+          <h2 className="font-oswald text-6xl lg:text-8xl">Office / Works</h2>
+          <span className="font-sans text-xs tracking-widest mb-4">作品一覧</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16">
@@ -49,7 +49,7 @@ const Floor02: React.FC = () => {
                 {/* image disabled to keep code background visible */}
                 <div className="w-full h-full bg-black/10" />
               </div>
-              <h3 className="font-bebas text-3xl mb-2">{item.title}</h3>
+              <h3 className="font-oswald text-3xl mb-2">{item.title}</h3>
               <p className="text-sm text-gray-400 font-sans leading-relaxed">
                 {item.description}
               </p>
