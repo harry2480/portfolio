@@ -107,7 +107,7 @@ published: true
 # 記事本文
 ```
 
-## 🚀 デプロイ
+## デプロイ
 
 ### Cloudflare Pages へのデプロイ
 
