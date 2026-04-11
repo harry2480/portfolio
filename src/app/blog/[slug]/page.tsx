@@ -42,7 +42,12 @@ export default async function PostPage({ params }: Props) {
         <article className="space-y-8">
           <div className="border-b border-white/20 pb-8">
             <div className="font-mono text-xs text-gray-500 mb-4">{post.date}</div>
-            <h1 className="font-oswald text-5xl lg:text-6xl text-white mb-6">{post.title}</h1>
+            <h1
+              className="font-oswald text-5xl lg:text-6xl text-white mb-6"
+              style={{ viewTransitionName: `blog-${slug}` }}
+            >
+              {post.title}
+            </h1>
             <div className="flex flex-wrap gap-2">
               {(post.tags || []).map((tag, i) => (
                 <span key={i} className="text-[10px] border border-white/30 px-3 py-1 text-gray-400">
@@ -52,7 +57,7 @@ export default async function PostPage({ params }: Props) {
             </div>
           </div>
 
-          <div className="prose prose-invert max-w-none">
+          <div className="prose prose-invert max-w-none slide-enter-content">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
@@ -63,7 +68,7 @@ export default async function PostPage({ params }: Props) {
                   <h3 className="font-oswald text-xl text-white mt-6 mb-3" {...props} />
                 ),
                 p: ({ node, ...props }) => (
-                  <p className="font-sans text-gray-300 leading-relaxed mb-4" {...props} />
+                  <div className="font-sans text-gray-300 leading-relaxed mb-4" {...props} />
                 ),
                 pre: ({ node, ...props }) => (
                   <pre className="rounded-sm mb-4 overflow-auto" {...props} />
@@ -83,14 +88,17 @@ export default async function PostPage({ params }: Props) {
 
                   if (!inline) {
                     return (
-                      <SyntaxHighlighter
-                        style={vscDarkPlus}
-                        language={language}
-                        className="rounded-sm mb-4 text-sm"
-                        {...props}
-                      >
-                        {String(children).replace(/\n$/, '')}
-                      </SyntaxHighlighter>
+                      <div className="rounded-sm mb-4 text-sm overflow-auto">
+                        <SyntaxHighlighter
+                          PreTag="div"
+                          CodeTag="div"
+                          style={vscDarkPlus}
+                          language={language}
+                          {...props}
+                        >
+                          {String(children).replace(/\n$/, '')}
+                        </SyntaxHighlighter>
+                      </div>
                     )
                   }
 

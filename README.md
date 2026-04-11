@@ -1,8 +1,6 @@
-# DEV_CORE - ポートフォリオ＆技術ブログ
+# harry2480.dev
 
-モダン Web 技術と美しい UI/UX デザインを融合させたポートフォリオサイト。
-
-## 🚀 技術スタック
+## 技術スタック
 
 - **フレームワーク:** Next.js 16 (App Router)
 - **言語:** TypeScript 5.x
@@ -11,9 +9,9 @@
 - **アニメーション:** Framer Motion, Lenis (スムーススクロール)
 - **UI コンポーネント:** Radix UI, shadcn/ui
 - **コマンドパレット:** cmdk
-- **静的ホスティング:** GitHub Pages
+- **静的ホスティング:** Cloudflare
 
-## 📁 プロジェクト構造
+## プロジェクト構造
 
 ```
 src/
@@ -48,17 +46,17 @@ content/
       └── deploy.yml            # GitHub Actions ワークフロー
 ```
 
-## ✨ 主な機能
+## 主な機能
 
-- ✅ **Bento Grid レイアウト:** プロフィール・プロジェクト・ブログを視覚的に配置
-- ✅ **ブログシステム:** MDX で記事作成、自動読了時間計算
-- ✅ **コマンドパレット:** `Ctrl+K` でナビゲーション・検索
-- ✅ **スムーススクロール:** 高級感のある操作感 (Lenis)
-- ✅ **目次 (TOC):** スクロール位置に応じたハイライト
-- ✅ **静的生成:** `next export` で完全静的出力、GitHub Pages 対応
-- ✅ **CI/CD:** GitHub Actions で自動ビルド・デプロイ
+- **Bento Grid レイアウト:** プロフィール・プロジェクト・ブログを視覚的に配置
+- **ブログシステム:** MDX で記事作成、自動読了時間計算
+- **コマンドパレット:** `Ctrl+K` でナビゲーション・検索
+- **スムーススクロール:** 高級感のある操作感 (Lenis)
+- **目次 (TOC):** スクロール位置に応じたハイライト
+- **静的生成:** `next export` で完全静的出力、GitHub Pages 対応
+- **CI/CD:** GitHub Actions で自動ビルド・デプロイ
 
-## 🛠️ セットアップ
+## セットアップ
 
 ### 前提条件
 
@@ -78,6 +76,11 @@ npm run dev
 
 http://localhost:3000 で起動
 
+**ローカル開発メモ**
+
+- 本リポジトリでは `src/app/layout.tsx` に `CodeBackground` をグローバルで挿入しています。全ページで白い波線アニメーションが表示されるため、負荷や表示を抑えたい場合は当該行をコメントアウトしてください。
+- TypeScript 設定については `tsconfig.json` に `ignoreDeprecations: "6.0"` を追加しており、ローカルで起きる非推奨警告を抑制しています。
+
 ### ビルド
 
 ```bash
@@ -86,7 +89,7 @@ npm run build
 
 `out/` ディレクトリに静的ファイルが生成されます。
 
-## 📝 ブログ記事の追加
+## ブログ記事の追加
 
 `content/posts/` ディレクトリに `.mdx` ファイルを追加します。
 
@@ -106,26 +109,33 @@ published: true
 
 ## 🚀 デプロイ
 
-### GitHub Pages へのデプロイ
+### Cloudflare Pages へのデプロイ
 
-1. GitHub にリポジトリを作成
-2. リポジトリの **Settings → Pages** で以下を設定：
-   - Source: **GitHub Actions**
-3. `main` ブランチに `push` すると自動デプロイが開始されます
+1. Cloudflare にサインアップし、アカウントを作成します。
+2. Cloudflare Pages で「Create a project」を選び、GitHub リポジトリを接続します。
+3. ビルド設定は次の通りにします（このリポジトリの既存設定に合わせて調整してください）：
+  - Build command: `npm run build`
+  - Build output directory: `out`
+  - Framework preset: `None`（Next.js を `next export` で静的出力している場合）
+4. 環境変数やシークレットが必要なら、Cloudflare Pages の UI で追加します。
+5. Git の push によって自動でプレビューと本番デプロイが実行されます。
 
-**手動デプロイ:**
+補足:
+- Next.js を Cloudflare のエッジ上で動的に動かしたい場合は `@cloudflare/next-on-pages` などのアダプターを検討してください（設定が複雑になるため、今回は静的 `next export` を想定した手順を記載しています）。
+
+**手動ビルド（ローカルで静的ファイルを作る）**
 
 ```bash
 npm run build
-# out/ ディレクトリを GitHub Pages にアップロード
+# out/ ディレクトリを Pages にアップロードするか、そのまま Cloudflare がビルドできるようにセットします
 ```
 
-## 📊 性能目標
+## 性能目標
 
 - Lighthouse Score: 95+ (Performance, Accessibility, Best Practices, SEO)
 - ページロード時間: <1s (SSG)
 
-## 🛠️ 今後の改善予定
+## 今後の改善予定
 
 - [ ] OGP 画像の自動生成
 - [ ] RSS フィード対応
@@ -133,6 +143,6 @@ npm run build
 - [ ] より詳細なアナリティクス
 - [ ] ダークモードの完全対応
 
-## 📄 ライセンス
+## ライセンス
 
 MIT License

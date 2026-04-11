@@ -6,7 +6,6 @@ import Menu from './Menu.tsx'
 import FloorIndicator from './FloorIndicator.tsx'
 import FloorsLayout from './FloorsLayout'
 import { useFloorNavigation } from '@/hooks/useFloorNavigation'
-import CodeBackground from './CodeBackground'
 
 export const Building: React.FC = () => {
   const [currentFloor, setCurrentFloor] = useState(1)
@@ -17,8 +16,6 @@ export const Building: React.FC = () => {
 
   return (
     <main className="relative z-10 w-full h-full">
-      {/* Background: code listing only for Entrance + noise */}
-      {currentFloor === 1 && <CodeBackground />}
       <div className="noise" />
 
       {/* Header */}
