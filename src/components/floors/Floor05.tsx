@@ -39,7 +39,7 @@ const Floor05: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
         {/* ヘッダー */}
         <div className="mb-16 text-center border-b border-white/20 pb-8">
           <h2 className="font-oswald text-6xl lg:text-7xl text-white mb-4">BLOG</h2>
-          <p className="font-sans text-sm text-gray-400 tracking-widest">技術やエンジニアリング、日常についての記事（一部<a href="https://zenn.dev/harry4869" target="_blank" className="text-brand-accent hover:underline">Zenn</a>）にも公開中</p>
+          <p className="font-sans text-sm text-gray-400 tracking-widest">技術やエンジニアリング、日常についての記事</p>
         </div>
 
         {/* ブログ記事一覧 */}
