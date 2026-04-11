@@ -50,7 +50,10 @@ const Floor05: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between lg:gap-8">
                   <div className="flex-1 min-w-0">
                     <div className="font-mono text-xs text-gray-500 mb-3">{post.date}</div>
-                    <h3 className="font-oswald text-2xl lg:text-3xl text-white mb-3 group-hover:text-brand-accent transition-colors">
+                    <h3
+                      className="font-oswald text-2xl lg:text-3xl text-white mb-3 group-hover:text-brand-accent transition-colors"
+                      style={{ viewTransitionName: `blog-${post.slug}` }}
+                    >
                       {post.title}
                     </h3>
                     <p className="font-sans text-sm text-gray-400 leading-relaxed mb-4">
