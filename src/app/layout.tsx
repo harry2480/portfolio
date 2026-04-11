@@ -3,6 +3,7 @@ import './globals.css'
 import GlobalFloorLinks from '@/components/GlobalFloorLinks'
 import GlobalHeader from '@/components/GlobalHeader'
 import GlobalElevatorDoors from '@/components/GlobalElevatorDoors'
+import CodeBackground from '@/components/CodeBackground'
 
 export const metadata: Metadata = {
   title: 'PORTFOLIO | BMSG FES \'24 STYLE',
@@ -24,6 +25,7 @@ export default function RootLayout({
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
       </head>
       <body className="antialiased">
+        <CodeBackground />
         <GlobalElevatorDoors />
         <GlobalHeader />
         {children}

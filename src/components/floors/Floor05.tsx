@@ -39,7 +39,7 @@ const Floor05: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
         {/* ヘッダー */}
         <div className="mb-16 text-center border-b border-white/20 pb-8">
           <h2 className="font-oswald text-6xl lg:text-7xl text-white mb-4">BLOG</h2>
-          <p className="font-sans text-sm text-gray-400 tracking-widest">技術やエンジニアリング、日常についての記事（一部<a href="https://zenn.dev/harry4869" target="_blank" className="text-brand-accent hover:underline">Zenn</a>）にも公開中</p>
+          <p className="font-sans text-sm text-gray-400 tracking-widest">技術やエンジニアリング、日常についての記事</p>
         </div>
 
         {/* ブログ記事一覧 */}
@@ -50,7 +50,10 @@ const Floor05: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between lg:gap-8">
                   <div className="flex-1 min-w-0">
                     <div className="font-mono text-xs text-gray-500 mb-3">{post.date}</div>
-                    <h3 className="font-oswald text-2xl lg:text-3xl text-white mb-3 group-hover:text-brand-accent transition-colors">
+                    <h3
+                      className="font-oswald text-2xl lg:text-3xl text-white mb-3 group-hover:text-brand-accent transition-colors"
+                      style={{ viewTransitionName: `blog-${post.slug}` }}
+                    >
                       {post.title}
                     </h3>
                     <p className="font-sans text-sm text-gray-400 leading-relaxed mb-4">

@@ -70,12 +70,12 @@ const Floor01: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
               className="reveal-text text-[15vw] md:text-[10rem] leading-[0.8] tracking-tight opacity-100 lowercase"
               style={{ fontFamily: 'Bebas Neue, "Noto Sans JP", sans-serif' }}
             >
-              Harry<br />Portfolio
+              harry2480.dev
             </h2>
           </div>
           <div className="mt-4 flex flex-col items-center gap-2">
             <p className="font-sans text-xs tracking-[0.5em] text-gray-400 reveal-item opacity-0 translate-y-4">
-              EST. 1998 / MINATO-KU
+              EST. 2003 / harry2480.dev
             </p>
             <div className="w-20 h-[1px] bg-white/30 reveal-item opacity-0 scale-x-0" />
           </div>
@@ -96,12 +96,12 @@ const Floor01: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans text-sm text-gray-400 leading-relaxed">
             <div>
               <p className="mb-4">
-                本サイトは、ポートフォリオサイトを架空の自社ビルに見立てて構成しています。
-                エレベーターを使って各フロア（ページ）へアクセスしてください。
+                このサイトは、自分の活動や作品を「ビル」に見立てて構成しています。
+                画面上のエレベーターからフロアを選ぶと、そのフロアの内容が表示されます。
               </p>
               <p>
-                圧倒的な没入感と、機能的なアクセシビリティの両立を目指しました。
-                スクロールすることで、建物の詳細情報や隠されたコンテンツを見ることができます。
+                気軽に見て回ってください。スクロールでテキストや細かい要素が現れますし、隠しコンテンツもいくつか用意しています。
+                読みやすさ・操作性を大事にしているので、直感的に楽しめるはずです。
               </p>
             </div>
             <div>
@@ -112,7 +112,7 @@ const Floor01: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
                 </li>
                 <li>
                   <span className="block text-white font-bold text-xs mb-1">FLOOR 03: SKILL</span>
-                  技術スタック・実験的コードの保管庫
+                  技術スタック
                 </li>
                 <li>
                   <span className="block text-white font-bold text-xs mb-1">FLOOR 04: ABOUT</span>
@@ -120,7 +120,7 @@ const Floor01: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
                 </li>
                 <li>
                   <span className="block text-white font-bold text-xs mb-1">FLOOR 05: BLOG</span>
-                  技術ブログ・記事一覧
+                  ブログ
                 </li>
               </ul>
             </div>
