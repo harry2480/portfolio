@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "fetch-repos": "node scripts/fetch-repos.js",
-    "dev": "npm run fetch-repos && next dev",
-    "build": "npm run fetch-repos && next build",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },

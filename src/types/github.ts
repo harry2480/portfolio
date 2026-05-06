@@ -12,3 +12,15 @@ export interface PR {
   repo_url: string
   labels: string[]
 }
+
+export interface Repo {
+  id: number
+  name: string
+  description: string
+  url: string
+  language: string | null
+  topics: string[]
+  stargazers_count: number
+  updated_at: string
+  ogImage: string
+}
