@@ -7,13 +7,13 @@ const Floor03: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
     <section className="floor-container">
       <div className="pt-32 px-6 pb-20 max-w-6xl mx-auto">
         <div className="flex items-end justify-between mb-12 border-b border-white/20 pb-4">
-          <h2 className="font-oswald text-6xl lg:text-8xl">LAB / SKILLS</h2>
+          <h2 className="font-oswald text-6xl lg:text-8xl">Lab / Skills</h2>
           <span className="font-sans text-xs tracking-widest mb-4">技術スタック</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="border border-white/20 p-6 rounded-sm">
-            <h3 className="font-oswald text-2xl mb-4 text-white">FRONTEND</h3>
+            <h3 className="font-oswald text-2xl mb-4 text-white">Frontend</h3>
             <ul className="space-y-3 text-sm text-gray-400 font-sans">
               <li>React / Next.js / TypeScript</li>
               <li>Tailwind CSS / CSS Modules</li>
@@ -23,7 +23,7 @@ const Floor03: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
           </div>
 
           <div className="border border-white/20 p-6 rounded-sm">
-            <h3 className="font-oswald text-2xl mb-4 text-white">BACKEND</h3>
+            <h3 className="font-oswald text-2xl mb-4 text-white">Backend</h3>
             <ul className="space-y-3 text-sm text-gray-400 font-sans">
               <li>Node.js / Express</li>
               <li>Python / FastAPI</li>
@@ -33,7 +33,7 @@ const Floor03: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
           </div>
 
           <div className="border border-white/20 p-6 rounded-sm">
-            <h3 className="font-oswald text-2xl mb-4 text-white">DEVOPS</h3>
+            <h3 className="font-oswald text-2xl mb-4 text-white">DevOps</h3>
             <ul className="space-y-3 text-sm text-gray-400 font-sans">
               <li>Docker / Kubernetes</li>
               <li>GitHub Actions / CI</li>

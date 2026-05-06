@@ -43,7 +43,7 @@ const Floor05: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
       <div className="pt-32 px-6 pb-20 max-w-4xl mx-auto">
         {/* ヘッダー */}
         <div className="mb-16 text-center border-b border-white/20 pb-8">
-          <h2 className="font-oswald text-6xl lg:text-7xl text-white mb-4">BLOG</h2>
+          <h2 className="font-oswald text-6xl lg:text-7xl text-white mb-4">Blog</h2>
           <p className="font-sans text-sm text-gray-400 tracking-widest">技術やエンジニアリング、日常についての記事</p>
         </div>
 
