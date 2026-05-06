@@ -16,6 +16,7 @@ const menuItems = [
   { floor: 3, label: 'Skill', path: '/skill', img: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop' },
   { floor: 4, label: 'About', path: '/about', img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop' },
   { floor: 5, label: 'Blog', path: '/blog', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop' },
+  { floor: 6, label: 'GitHub', path: '/github', img: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2070&auto=format&fit=crop' },
 ]
 
 const Menu: React.FC<MenuProps> = ({ isOpen, onClose, onFloorSelect }) => {
