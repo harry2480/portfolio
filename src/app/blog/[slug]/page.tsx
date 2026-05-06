@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { BackToListButton } from './BackToListButton'
 
 type Props = {
   params: { slug: string }
@@ -35,9 +36,7 @@ export default async function PostPage({ params }: Props) {
   return (
     <section className="floor-container">
       <div className="pt-32 px-6 pb-20 max-w-3xl mx-auto">
-        <Link href="/blog" className="mb-8 font-sans text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 w-fit">
-          ← 記事一覧に戻る
-        </Link>
+        <BackToListButton />
 
         <article className="space-y-8">
           <div className="border-b border-white/20 pb-8">

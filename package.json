@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "fetch-repos": "node scripts/fetch-repos.js",
-    "dev": "npm run fetch-repos && next dev",
-    "build": "npm run fetch-repos && next build",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -27,6 +26,7 @@
     "typescript": "^5.3.3"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260506.1",
     "@types/node": "^20.10.6",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
