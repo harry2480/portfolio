@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { navigateWithViewTransition } from '@/lib/viewTransition'
 
 interface BlogPost {
   id: number
@@ -12,6 +13,10 @@ interface BlogPost {
 }
 
 const Floor05: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloorSelect }) => {
+  const handleBlogLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, slug: string) => {
+    e.preventDefault()
+    navigateWithViewTransition(`/blog/${slug}`)
+  }
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -45,8 +50,16 @@ const Floor05: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
         {/* ブログ記事一覧 */}
         <div className="space-y-8">
           {blogPosts.map((post) => (
-            <a key={post.id} href={`/blog/${post.slug}`} className="block no-underline">
-              <article className="border border-white/20 p-6 lg:p-8 hover:border-white/40 transition-colors cursor-pointer group">
+            <a 
+              key={post.id} 
+              href={`/blog/${post.slug}`} 
+              onClick={(e) => handleBlogLinkClick(e, post.slug)}
+              className="block no-underline"
+            >
+              <article 
+                className="border border-white/20 p-6 lg:p-8 hover:border-white/40 transition-colors cursor-pointer group"
+                style={{ viewTransitionName: `blog-card-${post.slug}` }}
+              >
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between lg:gap-8">
                   <div className="flex-1 min-w-0">
                     <div className="font-mono text-xs text-gray-500 mb-3">{post.date}</div>
