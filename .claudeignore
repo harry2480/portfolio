@@ -1,0 +1,61 @@
+# Files and folders to exclude from Claude/agent analysis
+
+# Node / build
+node_modules/
+.next/
+out/
+build/
+/dist/
+
+# Local environment and secrets
+.env
+.env.*
+*.pem
+*.key
+
+# VCS / editor
+.git/
+.DS_Store
+.vscode/
+.idea/
+
+# Lock & cache
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+*.tsbuildinfo
+
+# Package manager / workspace
+pnpm-workspace.yaml
+
+# Build caches
+.cache/
+.parcel-cache/
+.vite/
+.turbo/
+
+# Exclude sibling projects or large folders not relevant for agent analysis
+nextjs-portfolio/
+a/
+ryoppippi.com/
+
+
+# Large media / static assets
+public/assets/
+public/static/
+static/
+*.png
+*.jpg
+*.jpeg
+*.mp4
+*.mov
+
+# Databases
+*.sqlite
+*.db
+
+# Logs
+*.log
+
+# Anything else you don't want the agent to read
+# Add paths here as needed
