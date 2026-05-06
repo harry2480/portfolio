@@ -8,6 +8,9 @@ import CodeBackground from '@/components/CodeBackground'
 export const metadata: Metadata = {
   title: 'PORTFOLIO | BMSG FES \'24 STYLE',
   description: 'ビルディング型ポートフォリオサイト',
+  icons: {
+    icon: '/icon.svg',
+  },
 }
 
 export default function RootLayout({

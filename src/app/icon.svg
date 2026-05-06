@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Background -->
+  <rect width="64" height="64" fill="#050505"/>
+
+  <!-- Terminal window frame -->
+  <rect x="6" y="10" width="52" height="44" fill="none" stroke="#333" stroke-width="1.5" rx="2"/>
+
+  <!-- Terminal title bar -->
+  <rect x="6" y="10" width="52" height="8" fill="#1a1a1a"/>
+  <line x1="6" y1="18" x2="58" y2="18" stroke="#333" stroke-width="1"/>
+
+  <!-- Terminal content background -->
+  <rect x="8" y="20" width="48" height="32" fill="#0a0a0a"/>
+
+  <!-- Blinking cursor (red) -->
+  <rect x="42" y="28" width="2" height="5" fill="#FF0033" opacity="0.9"/>
+
+  <!-- Command prompt text (white) -->
+  <text x="12" y="33" font-family="monospace" font-size="5" fill="#ffffff" letter-spacing="0.5">
+    <tspan>npm run</tspan>
+  </text>
+
+  <!-- Red accent on frame -->
+  <line x1="6" y1="10" x2="16" y2="10" stroke="#FF0033" stroke-width="1.5"/>
+</svg>
