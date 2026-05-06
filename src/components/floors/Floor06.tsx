@@ -54,7 +54,7 @@ const Floor06: React.FC<{ onFloorSelect?: (floor: number) => void }> = () => {
     <section className="floor-container">
       <div className="pt-32 px-6 pb-20 max-w-4xl mx-auto">
         <div className="mb-16 text-center border-b border-white/20 pb-8">
-          <h2 className="font-oswald text-6xl lg:text-8xl text-white mb-4">GITHUB</h2>
+          <h2 className="font-oswald text-6xl lg:text-8xl text-white mb-4">GitHub</h2>
           <p className="font-sans text-sm text-gray-400 tracking-widest">Pull Request Activity</p>
         </div>
 

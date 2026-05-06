@@ -92,7 +92,7 @@ const Floor01: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
       {/* Additional Content */}
       <div className="relative z-10 w-full bg-black/80 backdrop-blur-lg border-t border-white/10 min-h-[50vh] py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <h3 className="font-oswald text-4xl mb-8 text-gray-300">BUILDING GUIDE</h3>
+          <h3 className="font-oswald text-4xl mb-8 text-gray-300">Building Guide</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans text-sm text-gray-400 leading-relaxed">
             <div>
               <p className="mb-4">

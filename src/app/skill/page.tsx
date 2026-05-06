@@ -8,14 +8,14 @@ export default function SkillPage() {
     <section className="floor-container">
       <div className="pt-32 px-6 pb-20 max-w-6xl mx-auto">
         <div className="flex items-end justify-between mb-12 border-b border-white/20 pb-4">
-          <h2 className="font-oswald text-6xl lg:text-8xl">SKILLS</h2>
+          <h2 className="font-oswald text-6xl lg:text-8xl">Skills</h2>
           <span className="font-sans text-xs tracking-widest mb-4">技術スタック</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
-              title: 'FRONTEND',
+              title: 'Frontend',
               items: [
                 'JavaScript',
                 'TypeScript',
@@ -33,7 +33,7 @@ export default function SkillPage() {
               ],
             },
             {
-              title: 'BACKEND',
+              title: 'Backend',
               items: [
                 'Node.js (Express, NestJS)',
                 'Python (Django, Flask, FastAPI)',
@@ -48,7 +48,7 @@ export default function SkillPage() {
               ],
             },
             {
-              title: 'DEVOPS',
+              title: 'DevOps',
               items: [
                 'Vercel',
                 'Google Cloud (GCP)',
