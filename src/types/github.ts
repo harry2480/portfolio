@@ -13,6 +13,23 @@ export interface PR {
   labels: string[]
 }
 
+export interface RepoPRSummary {
+  repo_name: string
+  repo_url: string
+  total: number
+  merged: number
+  open: number
+  closed: number
+  last_updated: string
+}
+
+export interface PRActivity {
+  total: number
+  truncated: boolean
+  repos: RepoPRSummary[]
+  prs: PR[]
+}
+
 export interface Repo {
   id: number
   name: string
