@@ -58,7 +58,7 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
                 </div>
                 <div className="mt-3 flex gap-2">
                   <a
-                    href="https://github.com/your-username/human-powered-flight"
+                    href="https://github.com/oitbirdman"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="border border-white/30 px-3 py-1 text-xs font-oswald hover:bg-white/10 transition-colors">
@@ -68,7 +68,7 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
                     GITHUB
                   </a>
                   <a
-                    href="https://example.com/human-powered-flight"
+                    href="https://oitbirdman.pages.dev"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="border border-white/30 px-3 py-1 text-xs font-oswald hover:bg-white/10 transition-colors">
@@ -89,7 +89,7 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
                 </div>
                 <div className="mt-3 flex gap-2">
                   <a
-                    href="https://github.com/your-username/3d-shooting-game"
+                    href="https://github.com/harry2480/graduation-project"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="border border-white/30 px-3 py-1 text-xs font-oswald hover:bg-white/10 transition-colors">
