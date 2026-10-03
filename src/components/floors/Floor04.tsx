@@ -171,18 +171,6 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
               >
                 EMAIL
               </a>
-              <button 
-                onClick={() => window.open('https://github.com', '_blank')}
-                className="border border-white/30 px-4 py-2 text-xs font-oswald hover:bg-white/10 transition-colors"
-              >
-                GITHUB
-              </button>
-              <button 
-                onClick={() => router.push('/blog')}
-                className="border border-white/30 px-4 py-2 text-xs font-oswald hover:bg-white/10 transition-colors"
-              >
-                BLOG / ZENN
-              </button>
             </div>
           </div>
         </div>
