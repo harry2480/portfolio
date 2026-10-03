@@ -70,12 +70,12 @@ const Floor01: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
               className="reveal-text text-[15vw] md:text-[10rem] leading-[0.8] tracking-tight opacity-100 lowercase"
               style={{ fontFamily: 'Bebas Neue, "Noto Sans JP", sans-serif' }}
             >
-              harry2480.dev
+              harry4869.dev
             </h2>
           </div>
           <div className="mt-4 flex flex-col items-center gap-2">
             <p className="font-sans text-xs tracking-[0.5em] text-gray-400 reveal-item opacity-0 translate-y-4">
-              EST. 2003 / harry2480.dev
+              EST. 2003 / harry4869.dev
             </p>
             <div className="w-20 h-[1px] bg-white/30 reveal-item opacity-0 scale-x-0" />
           </div>
