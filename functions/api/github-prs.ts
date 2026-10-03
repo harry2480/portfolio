@@ -1,5 +1,5 @@
 /// <reference types="@cloudflare/workers-types" />
-import type { PR, PRState } from '../../src/types/github'
+import type { PR, PRActivity, PRState, RepoPRSummary } from '../../src/types/github'
 
 interface Env {
   GITHUB_TOKEN: string
@@ -18,71 +18,132 @@ interface SearchItem {
   pull_request?: { merged_at?: string | null }
 }
 
+interface SearchResponse {
+  total_count: number
+  items: SearchItem[]
+}
+
 const GITHUB_USERNAME = 'harry2480'
 const CACHE_DURATION = 5 * 60 * 1000
+const PER_PAGE = 100
+// Search API は最大 1000 件までしか返さない
+const MAX_PAGES = 10
 
-let cachedPrs: PR[] | null = null
+let cached: PRActivity | null = null
 let cacheTime = 0
 
-export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
-  if (!env.GITHUB_TOKEN) {
-    return Response.json({ error: 'GITHUB_TOKEN not configured' }, { status: 400 })
-  }
-
-  if (cachedPrs && Date.now() - cacheTime < CACHE_DURATION) {
-    return Response.json(cachedPrs, {
-      headers: { 'Cache-Control': 'public, max-age=300' },
-    })
-  }
-
+async function fetchSearchPage(token: string, page: number): Promise<SearchResponse> {
   const url =
     `https://api.github.com/search/issues` +
-    `?q=${encodeURIComponent(`is:pr author:${GITHUB_USERNAME}`)}` +
-    `&sort=updated&order=desc&per_page=50`
+    `?q=${encodeURIComponent(`is:pr is:public author:${GITHUB_USERNAME}`)}` +
+    `&sort=updated&order=desc&per_page=${PER_PAGE}&page=${page}`
 
   const res = await fetch(url, {
     headers: {
       Accept: 'application/vnd.github+json',
-      Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+      Authorization: `Bearer ${token}`,
       'User-Agent': 'harry4869-portfolio',
       'X-GitHub-Api-Version': '2022-11-28',
     },
   })
 
   if (!res.ok) {
-    console.error('GitHub API error:', res.status, await res.text())
+    throw new Error(`GitHub API error: ${res.status} ${await res.text()}`)
+  }
+
+  return (await res.json()) as SearchResponse
+}
+
+function toPR(item: SearchItem): PR {
+  const repoSegments = item.repository_url.split('/').slice(-2)
+  const repoName = repoSegments.length === 2 ? repoSegments.join('/') : ''
+  const repoUrl = item.html_url.split('/pull/')[0] || ''
+  const merged = Boolean(item.pull_request?.merged_at)
+  const state: PRState = merged ? 'merged' : item.state === 'open' ? 'open' : 'closed'
+
+  return {
+    id: item.id,
+    number: item.number,
+    title: item.title,
+    html_url: item.html_url,
+    state,
+    created_at: item.created_at,
+    updated_at: item.updated_at,
+    repo_name: repoName,
+    repo_url: repoUrl,
+    labels: (item.labels || [])
+      .map((l) => (typeof l === 'string' ? l : l.name))
+      .filter((name): name is string => Boolean(name)),
+  }
+}
+
+function summarizeByRepo(prs: PR[]): RepoPRSummary[] {
+  const map = new Map<string, RepoPRSummary>()
+
+  for (const pr of prs) {
+    let summary = map.get(pr.repo_name)
+    if (!summary) {
+      summary = {
+        repo_name: pr.repo_name,
+        repo_url: pr.repo_url,
+        total: 0,
+        merged: 0,
+        open: 0,
+        closed: 0,
+        last_updated: pr.updated_at,
+      }
+      map.set(pr.repo_name, summary)
+    }
+    summary.total++
+    summary[pr.state]++
+    if (pr.updated_at > summary.last_updated) summary.last_updated = pr.updated_at
+  }
+
+  return [...map.values()].sort((a, b) => b.last_updated.localeCompare(a.last_updated))
+}
+
+export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
+  if (!env.GITHUB_TOKEN) {
+    return Response.json({ error: 'GITHUB_TOKEN not configured' }, { status: 400 })
+  }
+
+  if (cached && Date.now() - cacheTime < CACHE_DURATION) {
+    return Response.json(cached, {
+      headers: { 'Cache-Control': 'public, max-age=300' },
+    })
+  }
+
+  let items: SearchItem[]
+  try {
+    const first = await fetchSearchPage(env.GITHUB_TOKEN, 1)
+    const pageCount = Math.min(Math.ceil(first.total_count / PER_PAGE), MAX_PAGES)
+    const rest = await Promise.all(
+      Array.from({ length: Math.max(pageCount - 1, 0) }, (_, i) =>
+        fetchSearchPage(env.GITHUB_TOKEN, i + 2),
+      ),
+    )
+    items = [first, ...rest].flatMap((r) => r.items)
+  } catch (err) {
+    console.error(err)
     return Response.json({ error: 'Failed to fetch PRs' }, { status: 502 })
   }
 
-  const data = (await res.json()) as { items: SearchItem[] }
+  // ページ取得中に更新があると同じ PR が重複し得るため id で除外
+  const seen = new Set<number>()
+  const prs = items
+    .filter((item) => (seen.has(item.id) ? false : (seen.add(item.id), true)))
+    .map(toPR)
 
-  const prs: PR[] = data.items.map((item) => {
-    const repoSegments = item.repository_url.split('/').slice(-2)
-    const repoName = repoSegments.length === 2 ? repoSegments.join('/') : ''
-    const repoUrl = item.html_url.split('/pull/')[0] || ''
-    const merged = Boolean(item.pull_request?.merged_at)
-    const state: PRState = merged ? 'merged' : item.state === 'open' ? 'open' : 'closed'
+  const activity: PRActivity = {
+    total: prs.length,
+    repos: summarizeByRepo(prs),
+    prs,
+  }
 
-    return {
-      id: item.id,
-      number: item.number,
-      title: item.title,
-      html_url: item.html_url,
-      state,
-      created_at: item.created_at,
-      updated_at: item.updated_at,
-      repo_name: repoName,
-      repo_url: repoUrl,
-      labels: (item.labels || [])
-        .map((l) => (typeof l === 'string' ? l : l.name))
-        .filter((name): name is string => Boolean(name)),
-    }
-  })
-
-  cachedPrs = prs
+  cached = activity
   cacheTime = Date.now()
 
-  return Response.json(prs, {
+  return Response.json(activity, {
     headers: { 'Cache-Control': 'public, max-age=300' },
   })
 }
