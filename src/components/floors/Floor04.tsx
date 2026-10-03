@@ -100,7 +100,7 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
                   </a>
                  
                    <a
-                     href="https://example.com/3d-shooting-game"
+                     href="https://harry2480.github.io/civilwar"
                      target="_blank"
                      rel="noopener noreferrer"
                      className="border border-white/30 px-3 py-1 text-xs font-oswald hover:bg-white/10 transition-colors">
