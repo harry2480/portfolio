@@ -165,12 +165,12 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
               技術相談、お仕事のご依頼、あるいはコラボレーションについてお気軽にご連絡ください。
             </p>
             <div className="flex gap-4">
-              <button 
-                onClick={() => window.open('mailto:contact@example.com')}
+              <a
+                href="mailto:contact@harry4869.dev"
                 className="border border-white/30 px-4 py-2 text-xs font-oswald hover:bg-white/10 transition-colors"
               >
                 EMAIL
-              </button>
+              </a>
               <button 
                 onClick={() => window.open('https://github.com', '_blank')}
                 className="border border-white/30 px-4 py-2 text-xs font-oswald hover:bg-white/10 transition-colors"
