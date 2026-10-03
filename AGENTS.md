@@ -48,15 +48,16 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => { ... }
 
 ### ブランチ運用 / PR 作成ルール
 
-- 新しい作業ブランチは **必ず `develop` から作成する**（`main` から切らない）
-- PR は `develop` をベースに作成する（hotfix など `main` 直行が必要な場合のみユーザーに確認の上で例外）
-- `main` および `develop` への **直接 push は禁止**（force push を含む）。変更は必ず作業ブランチ → PR → マージで反映する
+- ブランチは `main` の一本運用（`develop` は廃止済み）
+- 新しい作業ブランチは **必ず `main` から作成する**
+- PR は `main` をベースに作成する。`main` へのマージがそのまま本番デプロイになる
+- `main` への **直接 push は禁止**（force push を含む）。変更は必ず作業ブランチ → PR → マージで反映する
 - ブランチ作成手順例:
 
 ```bash
 git fetch origin
-git switch develop
-git pull --ff-only origin develop
+git switch main
+git pull --ff-only origin main
 git switch -c <type>/<short-description>   # 例: feat/floor07-contact, fix/elevator-animation
 ```
 
