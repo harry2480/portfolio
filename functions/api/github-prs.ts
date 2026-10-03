@@ -20,6 +20,7 @@ interface SearchItem {
 
 interface SearchResponse {
   total_count: number
+  incomplete_results: boolean
   items: SearchItem[]
 }
 
@@ -28,15 +29,18 @@ const CACHE_DURATION = 5 * 60 * 1000
 const PER_PAGE = 100
 // Search API は最大 1000 件までしか返さない
 const MAX_PAGES = 10
+const FETCH_TIMEOUT = 8000
 
 let cached: PRActivity | null = null
 let cacheTime = 0
+let inflight: Promise<PRActivity> | null = null
 
 async function fetchSearchPage(token: string, page: number): Promise<SearchResponse> {
   const url =
     `https://api.github.com/search/issues` +
     `?q=${encodeURIComponent(`is:pr is:public author:${GITHUB_USERNAME}`)}` +
-    `&sort=updated&order=desc&per_page=${PER_PAGE}&page=${page}`
+    // updated 順だと取得中の更新でページ境界がずれて欠落するため、不変な created 順で取得する
+    `&sort=created&order=desc&per_page=${PER_PAGE}&page=${page}`
 
   const res = await fetch(url, {
     headers: {
@@ -45,6 +49,7 @@ async function fetchSearchPage(token: string, page: number): Promise<SearchRespo
       'User-Agent': 'harry4869-portfolio',
       'X-GitHub-Api-Version': '2022-11-28',
     },
+    signal: AbortSignal.timeout(FETCH_TIMEOUT),
   })
 
   if (!res.ok) {
@@ -102,6 +107,31 @@ function summarizeByRepo(prs: PR[]): RepoPRSummary[] {
   return [...map.values()].sort((a, b) => b.last_updated.localeCompare(a.last_updated))
 }
 
+async function loadActivity(token: string): Promise<{ activity: PRActivity; complete: boolean }> {
+  // セカンダリレート制限を避けるため逐次取得する
+  const first = await fetchSearchPage(token, 1)
+  const pageCount = Math.min(Math.ceil(first.total_count / PER_PAGE), MAX_PAGES)
+  const pages = [first]
+  for (let page = 2; page <= pageCount; page++) {
+    pages.push(await fetchSearchPage(token, page))
+  }
+
+  const items = pages.flatMap((p) => p.items)
+  const prs = [...new Map(items.map((item) => [item.id, item] as const)).values()]
+    .map(toPR)
+    .sort((a, b) => b.updated_at.localeCompare(a.updated_at))
+
+  return {
+    activity: {
+      total: prs.length,
+      truncated: first.total_count > prs.length,
+      repos: summarizeByRepo(prs),
+      prs,
+    },
+    complete: pages.every((p) => !p.incomplete_results),
+  }
+}
+
 export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
   if (!env.GITHUB_TOKEN) {
     return Response.json({ error: 'GITHUB_TOKEN not configured' }, { status: 400 })
@@ -113,37 +143,32 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
     })
   }
 
-  let items: SearchItem[]
   try {
-    const first = await fetchSearchPage(env.GITHUB_TOKEN, 1)
-    const pageCount = Math.min(Math.ceil(first.total_count / PER_PAGE), MAX_PAGES)
-    const rest = await Promise.all(
-      Array.from({ length: Math.max(pageCount - 1, 0) }, (_, i) =>
-        fetchSearchPage(env.GITHUB_TOKEN, i + 2),
-      ),
-    )
-    items = [first, ...rest].flatMap((r) => r.items)
+    // 同時のキャッシュミスを 1 回の取得にまとめる
+    inflight ??= loadActivity(env.GITHUB_TOKEN)
+      .then(({ activity, complete }) => {
+        // 不完全な結果はキャッシュしない
+        if (complete) {
+          cached = activity
+          cacheTime = Date.now()
+        }
+        return activity
+      })
+      .finally(() => {
+        inflight = null
+      })
+    const activity = await inflight
+
+    return Response.json(activity, {
+      headers: { 'Cache-Control': 'public, max-age=300' },
+    })
   } catch (err) {
     console.error(err)
+    if (cached) {
+      return Response.json(cached, {
+        headers: { 'Cache-Control': 'public, max-age=60' },
+      })
+    }
     return Response.json({ error: 'Failed to fetch PRs' }, { status: 502 })
   }
-
-  // ページ取得中に更新があると同じ PR が重複し得るため id で除外
-  const seen = new Set<number>()
-  const prs = items
-    .filter((item) => (seen.has(item.id) ? false : (seen.add(item.id), true)))
-    .map(toPR)
-
-  const activity: PRActivity = {
-    total: prs.length,
-    repos: summarizeByRepo(prs),
-    prs,
-  }
-
-  cached = activity
-  cacheTime = Date.now()
-
-  return Response.json(activity, {
-    headers: { 'Cache-Control': 'public, max-age=300' },
-  })
 }

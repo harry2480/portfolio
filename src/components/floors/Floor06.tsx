@@ -47,13 +47,16 @@ const Floor06: React.FC<{ onFloorSelect?: (floor: number) => void }> = () => {
     let mounted = true
     ;(async () => {
       try {
-        const res = await fetch('/api/github-prs')
+        const res = await fetch('/api/github-prs', { signal: AbortSignal.timeout(15000) })
         if (!res.ok) {
           const data = await res.json().catch(() => ({}))
           throw new Error(data?.error || `Request failed: ${res.status}`)
         }
-        const data: PRActivity = await res.json()
-        if (mounted) setActivity(data)
+        const data = await res.json()
+        if (!data || !Array.isArray(data.prs) || !Array.isArray(data.repos)) {
+          throw new Error('Unexpected response shape')
+        }
+        if (mounted) setActivity(data as PRActivity)
       } catch (err) {
         console.error(err)
         if (mounted) setError(err instanceof Error ? err.message : 'Unknown error')
@@ -104,7 +107,8 @@ const Floor06: React.FC<{ onFloorSelect?: (floor: number) => void }> = () => {
           <p className="font-sans text-sm text-gray-400 tracking-widest">Pull Request Activity</p>
           {activity && (
             <p className="font-mono text-xs text-gray-500 mt-3 tracking-widest">
-              {activity.total} PRs / {activity.repos.length} repos
+              {activity.total}
+              {activity.truncated && '+'} PRs / {activity.repos.length} repos
             </p>
           )}
         </div>
@@ -140,11 +144,12 @@ const Floor06: React.FC<{ onFloorSelect?: (floor: number) => void }> = () => {
         {!loading && !error && activity && activity.total > 0 && (
           <>
             <div className="mb-6">
-              <p className="font-sans text-[10px] text-gray-600 tracking-widest mb-3">REPOSITORY</p>
-              <div className="flex flex-wrap gap-2">
+              <p id="pr-repo-filter" className="font-sans text-[10px] text-gray-600 tracking-widest mb-3">REPOSITORY</p>
+              <div role="group" aria-labelledby="pr-repo-filter" className="flex flex-wrap gap-2">
                 <button
                   type="button"
                   onClick={() => selectRepo(null)}
+                  aria-pressed={selectedRepo === null}
                   className={`${chipBase} ${selectedRepo === null ? chipActive : chipInactive}`}
                 >
                   All <span className="text-gray-500">{activity.total}</span>
@@ -154,6 +159,7 @@ const Floor06: React.FC<{ onFloorSelect?: (floor: number) => void }> = () => {
                     key={repo.repo_name}
                     type="button"
                     onClick={() => selectRepo(repo.repo_name)}
+                    aria-pressed={selectedRepo === repo.repo_name}
                     title={repo.repo_name}
                     className={`${chipBase} ${selectedRepo === repo.repo_name ? chipActive : chipInactive}`}
                   >
@@ -164,13 +170,14 @@ const Floor06: React.FC<{ onFloorSelect?: (floor: number) => void }> = () => {
             </div>
 
             <div className="mb-10 pb-6 border-b border-white/10">
-              <p className="font-sans text-[10px] text-gray-600 tracking-widest mb-3">STATE</p>
-              <div className="flex flex-wrap gap-2">
+              <p id="pr-state-filter" className="font-sans text-[10px] text-gray-600 tracking-widest mb-3">STATE</p>
+              <div role="group" aria-labelledby="pr-state-filter" className="flex flex-wrap gap-2">
                 {STATE_FILTERS.map((state) => (
                   <button
                     key={state}
                     type="button"
                     onClick={() => selectState(state)}
+                    aria-pressed={stateFilter === state}
                     disabled={stateCounts[state] === 0}
                     className={`${chipBase} uppercase tracking-widest disabled:opacity-30 disabled:cursor-not-allowed ${
                       stateFilter === state ? chipActive : chipInactive

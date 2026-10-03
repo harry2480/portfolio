@@ -25,6 +25,7 @@ export interface RepoPRSummary {
 
 export interface PRActivity {
   total: number
+  truncated: boolean
   repos: RepoPRSummary[]
   prs: PR[]
 }
