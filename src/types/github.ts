@@ -40,4 +40,7 @@ export interface Repo {
   stargazers_count: number
   updated_at: string
   ogImage: string
+  fork: boolean
+  archived: boolean
+  is_template: boolean
 }

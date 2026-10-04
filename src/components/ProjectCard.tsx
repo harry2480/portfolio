@@ -9,13 +9,14 @@ interface ProjectCardProps {
   technologies: string[]
   url?: string
   index?: number
+  badges?: string[]
 }
 
 /**
  * ProjectCard Component
  * OFFICE フロアで使用するプロジェクトカード / Works ページのGitHubプロジェクト表示
  */
-export function ProjectCard({ title, description, image, technologies, url, index = 0 }: ProjectCardProps) {
+export function ProjectCard({ title, description, image, technologies, url, index = 0, badges = [] }: ProjectCardProps) {
   const [imageError, setImageError] = useState(false)
 
   const content = (
@@ -28,6 +29,15 @@ export function ProjectCard({ title, description, image, technologies, url, inde
           onError={() => setImageError(true)}
         />
       </div>
+      {badges.length > 0 && (
+        <div className="mb-2 flex gap-2 flex-wrap">
+          {badges.map((badge) => (
+            <span key={badge} className="text-[10px] font-mono uppercase tracking-widest rounded-full border border-brand-accent/60 px-2 py-0.5 text-brand-accent">
+              {badge}
+            </span>
+          ))}
+        </div>
+      )}
       <h3 className="font-oswald text-3xl mb-2 text-white group-hover:text-gray-300 transition-colors">{title}</h3>
       <p className="text-sm text-gray-400 font-sans leading-relaxed">
         {description}
