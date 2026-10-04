@@ -11,6 +11,8 @@ const floorToPath: Record<number, string> = {
   3: '/skill',
   4: '/about',
   5: '/blog',
+  6: '/github',
+  7: '/records',
 }
 
 export default function GlobalHeader() {
