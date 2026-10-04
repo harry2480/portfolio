@@ -27,6 +27,25 @@
 html.i18n-pending body {
   visibility: hidden;
 }
+/* CSS で出し分けるコンテンツは判定中も正しい言語で出せるので、隠さない（記事ページの View Transition 用） */
+html.i18n-pending [data-locales] {
+  visibility: visible;
+}
+
+/* ビルド時に全言語を出力するコンテンツ（ブログ本文など）は、表示中の言語だけを見せる */
+[data-locales] {
+  display: none;
+}
+html[data-locale='ja'] [data-locales~='ja'],
+html[data-locale='en'] [data-locales~='en'],
+html[data-locale='zh'] [data-locales~='zh'],
+html[data-locale='ko'] [data-locales~='ko'] {
+  display: block;
+}
+/* 翻訳がなく日本語の原文を出すときは、日本語のフォントで表示する */
+[data-locales][lang='ja'] {
+  --font-cjk: 'Noto Sans JP';
+}
 
 /* Google Fonts for font comparison */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Oswald:wght@300;400;700&family=Archivo+Narrow:wght@300;400;700&family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;700&family=Noto+Sans+JP:wght@300;400;700&display=swap');
