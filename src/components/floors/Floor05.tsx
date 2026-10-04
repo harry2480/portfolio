@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { navigateWithViewTransition } from '@/lib/viewTransition'
+import { useI18n } from '@/i18n/I18nProvider'
+import type { Locale } from '@/i18n/config'
 
 interface BlogPost {
   id: number
@@ -10,6 +12,7 @@ interface BlogPost {
   title: string
   excerpt: string
   tags: string[]
+  localized?: Partial<Record<Locale, { title: string; excerpt: string }>>
 }
 
 const Floor05: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloorSelect }) => {
@@ -17,6 +20,7 @@ const Floor05: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
     e.preventDefault()
     navigateWithViewTransition(`/blog/${slug}`)
   }
+  const { locale, t } = useI18n()
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -44,7 +48,7 @@ const Floor05: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
         {/* ヘッダー */}
         <div className="mb-16 text-center border-b border-white/20 pb-8">
           <h2 className="font-oswald text-6xl lg:text-7xl text-white mb-4">Blog</h2>
-          <p className="font-sans text-sm text-gray-400 tracking-widest">技術やエンジニアリング、日常についての記事</p>
+          <p className="font-sans text-sm text-gray-400 tracking-widest">{t.blog.subtitle}</p>
         </div>
 
         {/* ブログ記事一覧 */}
@@ -67,10 +71,10 @@ const Floor05: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
                       className="font-oswald text-2xl lg:text-3xl text-white mb-3 group-hover:text-brand-accent transition-colors"
                       style={{ viewTransitionName: `blog-${post.slug}` }}
                     >
-                      {post.title}
+                      {post.localized?.[locale]?.title ?? post.title}
                     </h3>
                     <p className="font-sans text-sm text-gray-400 leading-relaxed mb-4">
-                      {post.excerpt}
+                      {post.localized?.[locale]?.excerpt ?? post.excerpt}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {post.tags.map((tag, idx) => (
