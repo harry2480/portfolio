@@ -17,6 +17,7 @@ const FLOORS = [
   { id: 4, label: '04', name: 'About', path: '/about', img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop' },
   { id: 5, label: '05', name: 'Blog', path: '/blog', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop' },
   { id: 6, label: '06', name: 'GitHub', path: '/github', img: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2070&auto=format&fit=crop' },
+  { id: 7, label: '07', name: 'Records', path: '/records', img: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070&auto=format&fit=crop' },
 ];
 
 export default function MenuOverlay({ isOpen, onClose, onFloorSelect }: MenuOverlayProps) {

@@ -17,6 +17,7 @@ const menuItems = [
   { floor: 4, label: 'About', path: '/about', img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop' },
   { floor: 5, label: 'Blog', path: '/blog', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop' },
   { floor: 6, label: 'GitHub', path: '/github', img: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2070&auto=format&fit=crop' },
+  { floor: 7, label: 'Records', path: '/records', img: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070&auto=format&fit=crop' },
 ]
 
 const Menu: React.FC<MenuProps> = ({ isOpen, onClose, onFloorSelect }) => {
@@ -106,7 +107,8 @@ const Menu: React.FC<MenuProps> = ({ isOpen, onClose, onFloorSelect }) => {
         </div>
 
         {/* Menu Items */}
-        <div className="flex flex-col justify-center pl-0 md:pl-10 space-y-2">
+        <div className="flex flex-col min-h-0 overflow-y-auto pl-0 md:pl-10">
+          <div className="my-auto space-y-2 py-4">
           {menuItems.map((item) => (
             <button
               key={item.floor}
@@ -120,6 +122,7 @@ const Menu: React.FC<MenuProps> = ({ isOpen, onClose, onFloorSelect }) => {
               {item.label}
             </button>
           ))}
+          </div>
         </div>
       </div>
     </div>

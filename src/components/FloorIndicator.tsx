@@ -14,6 +14,7 @@ const floorLabels = [
   { id: 4, label: '04 About' },
   { id: 5, label: '05 Blog' },
   { id: 6, label: '06 GitHub' },
+  { id: 7, label: '07 Records' },
 ]
 
 const FloorIndicator: React.FC<FloorIndicatorProps> = ({ currentFloor, onFloorClick }) => {

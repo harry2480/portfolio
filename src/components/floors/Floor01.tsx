@@ -122,6 +122,14 @@ const Floor01: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
                   <span className="block text-white font-bold text-xs mb-1">FLOOR 05: BLOG</span>
                   ブログ
                 </li>
+                <li>
+                  <span className="block text-white font-bold text-xs mb-1">FLOOR 06: GITHUB</span>
+                  Pull Request の活動ログ
+                </li>
+                <li>
+                  <span className="block text-white font-bold text-xs mb-1">FLOOR 07: RECORDS</span>
+                  ハッカソン出場・OSS コントリビュートの記録
+                </li>
               </ul>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 このファイルは、`harry2480.dev` ポートフォリオリポジトリでコードを操作する際の AI エージェントへのルールおよび指針を提供します。
 
-**プロジェクト概要**: ビル / エレベーターをモチーフにした個人ポートフォリオサイト。Floor01〜Floor06 の各フロアに About / Skill / Works / Office / Blog / GitHub PRs を配置し、エレベーター演出と GSAP アニメーションで遷移する。Next.js 14 (App Router) を **静的エクスポート（`output: 'export'`）** でビルドし、Cloudflare Pages にデプロイ。動的データは Cloudflare Pages Functions で提供する。
+**プロジェクト概要**: ビル / エレベーターをモチーフにした個人ポートフォリオサイト。Floor01〜Floor07 の各フロアに Entrance / Works / Skill / About / Blog / GitHub PRs / Records を配置し、エレベーター演出と GSAP アニメーションで遷移する。Next.js 14 (App Router) を **静的エクスポート（`output: 'export'`）** でビルドし、Cloudflare Pages にデプロイ。動的データは Cloudflare Pages Functions で提供する。
 
 ## 必須ルール
 
@@ -35,10 +35,12 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => { ... }
 
 - `src/components/FloorsLayout.tsx`（フロア切替ロジック）
 - `src/components/FloorIndicator.tsx` / `FloorSidebar.tsx`（左サイドのフロアセレクタ）
+- `src/components/GlobalHeader.tsx` の `floorToPath`（Header / Menu からのルート遷移）
 - `src/components/GlobalFloorLinks.tsx`（GSAP エレベーター演出付きグローバルナビ）
 - `src/components/Menu.tsx` / `MenuOverlay.tsx`（フルスクリーンメニュー）
 - `src/components/floors/Floor0X.tsx`（実コンポーネント）
 - `src/app/<route>/page.tsx`（ルート単位ページが存在する場合）
+- `src/components/floors/Floor01.tsx` の Building Guide（フロア一覧の説明）
 
 ラベル表記は `"0X <Name>"`（例: `"06 GitHub"`）で統一。
 
@@ -143,13 +145,13 @@ src/
 ├── app/
 │   ├── layout.tsx              # Root レイアウト（CodeBackground 等のグローバル要素）
 │   ├── page.tsx                # トップ（ビル全景 / Floor01）
-│   ├── about/                  # Floor01
-│   ├── skill/                  # Floor02
-│   ├── works/                  # Floor03
-│   ├── office/                 # Floor04
+│   ├── works/                  # Floor02
+│   ├── skill/                  # Floor03
+│   ├── about/                  # Floor04
 │   ├── blog/                   # Floor05（ブログ一覧 + [slug] 詳細）
 │   ├── posts/                  # ブログ補助ルート
-│   └── github/                 # Floor06（GitHub PRs 表示）
+│   ├── github/                 # Floor06（GitHub PRs 表示）
+│   └── records/                # Floor07（ハッカソン / OSS コントリビュート記録）
 ├── components/
 │   ├── FloorsLayout.tsx        # フロア切替ロジック（要同期更新）
 │   ├── FloorIndicator.tsx      # 左サイド インジケータ（要同期更新）
@@ -158,18 +160,20 @@ src/
 │   ├── Menu.tsx / MenuOverlay.tsx  # フルスクリーンメニュー（要同期更新）
 │   ├── ElevatorDoors.tsx / GlobalElevatorDoors.tsx
 │   ├── floors/
-│   │   ├── Floor01.tsx 〜 Floor06.tsx
+│   │   ├── Floor01.tsx 〜 Floor07.tsx
 │   ├── ui/                     # shadcn/ui（button, card, dialog, input）
 │   └── （その他: Header, Building, ProjectCard, CodeBackground, etc.）
 ├── content/blog/               # Markdown 記事
 ├── data/repos.json             # fetch-repos.js が生成（gitignore 対象なら除外）
+├── data/records.ts             # Floor07 のハッカソン / OSS データ（手動管理）
 ├── hooks/useFloorNavigation.ts # フロア間遷移フック
 ├── lib/
 │   ├── animations.ts           # GSAP 共通定義
 │   ├── content.ts              # Markdown ローダー
 │   └── utils.ts                # cn() などの汎用
 ├── styles/globals.css          # Tailwind エントリ
-└── types/github.ts             # PR / GitHub 関連型（Functions と共有）
+├── types/github.ts             # PR / GitHub 関連型（Functions と共有）
+└── types/records.ts            # Floor07 の Hackathon / OssContribution 型
 
 functions/
 ├── api/

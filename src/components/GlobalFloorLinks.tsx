@@ -11,6 +11,7 @@ const menuItems = [
   { floor: 4, label: '04 About', path: '/about' },
   { floor: 5, label: '05 Blog', path: '/blog' },
   { floor: 6, label: '06 GitHub', path: '/github' },
+  { floor: 7, label: '07 Records', path: '/records' },
 ]
 
 export default function GlobalFloorLinks() {

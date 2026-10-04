@@ -7,6 +7,7 @@ import Floor03 from './floors/Floor03'
 import Floor04 from './floors/Floor04'
 import Floor05 from './floors/Floor05'
 import Floor06 from './floors/Floor06'
+import Floor07 from './floors/Floor07'
 
 interface FloorsLayoutProps {
   currentFloor: number
@@ -22,6 +23,7 @@ const FloorsLayout: React.FC<FloorsLayoutProps> = ({ currentFloor, onFloorSelect
       {currentFloor === 4 && <Floor04 onFloorSelect={onFloorSelect} />}
       {currentFloor === 5 && <Floor05 onFloorSelect={onFloorSelect} />}
       {currentFloor === 6 && <Floor06 onFloorSelect={onFloorSelect} />}
+      {currentFloor === 7 && <Floor07 onFloorSelect={onFloorSelect} />}
     </>
   )
 }
