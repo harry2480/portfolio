@@ -46,33 +46,39 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
 
   const data: RepoItem[] = []
   let hasNext = true
-  for (let page = 1; page <= MAX_PAGES && hasNext; page++) {
-    const url =
-      `https://api.github.com/users/${GITHUB_USERNAME}/repos` +
-      `?type=public&per_page=${PER_PAGE}&sort=updated&page=${page}`
+  try {
+    for (let page = 1; page <= MAX_PAGES && hasNext; page++) {
+      const url =
+        `https://api.github.com/users/${GITHUB_USERNAME}/repos` +
+        `?type=public&per_page=${PER_PAGE}&sort=updated&page=${page}`
 
-    const res = await fetch(url, {
-      headers: {
-        Accept: 'application/vnd.github+json',
-        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
-        'User-Agent': 'harry4869-portfolio',
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
-    })
+      const res = await fetch(url, {
+        headers: {
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+          'User-Agent': 'harry4869-portfolio',
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      })
 
-    if (!res.ok) {
-      console.error('GitHub API error:', res.status, `page=${page}`, await res.text())
-      return failure()
+      if (!res.ok) {
+        console.error('GitHub API error:', res.status, `page=${page}`, await res.text())
+        return failure()
+      }
+
+      const items: unknown = await res.json()
+      if (!Array.isArray(items)) {
+        console.error('Unexpected GitHub API response:', `page=${page}`, items)
+        return failure()
+      }
+
+      data.push(...(items as RepoItem[]))
+      hasNext = /rel="next"/.test(res.headers.get('Link') ?? '')
     }
-
-    const items: unknown = await res.json()
-    if (!Array.isArray(items)) {
-      console.error('Unexpected GitHub API response:', `page=${page}`, items)
-      return failure()
-    }
-
-    data.push(...(items as RepoItem[]))
-    hasNext = /rel="next"/.test(res.headers.get('Link') ?? '')
+  } catch (err) {
+    // ネットワークエラーや JSON の解析失敗も、キャッシュがあればそれを返す
+    console.error('GitHub API request failed:', err)
+    return failure()
   }
 
   if (hasNext) {
