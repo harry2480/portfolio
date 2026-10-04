@@ -44,6 +44,18 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => { ... }
 
 ラベル表記は `"0X <Name>"`（例: `"06 GitHub"`）で統一。
 
+### 表示文言は 4 言語すべて更新する
+
+サイトは日本語・英語・中国語（簡体字）・韓国語の表示切替に対応している（`src/i18n/`）。**画面に出る文言を追加・変更・削除したら、`ja` / `en` / `zh` / `ko` のすべてを同時に更新する。** 翻訳は Claude Code が行ってよい。
+
+- UI の文言は `src/i18n/dictionaries/<locale>.ts` に置き、コンポーネントからは `useI18n()` の `t` で参照する。JSX に日本語を直書きしない
+  - `ja.ts` が正。他言語は `Dictionary` 型で構造（キー・配列の長さ）を強制しているので、訳漏れは `npx tsc --noEmit` で検出できる
+- 文言を含むデータは `Localized` 型（`Record<Locale, string>`）で持つ（例: `src/data/records.ts`）
+- ブログ記事の翻訳は `src/content/blog/<locale>/<slug>.md` に置く。翻訳がない言語には日本語の原文が表示される
+- 英語のデザイン表記（`Works`、`END OF FLOOR 0X`、`VISITOR PASS` 等の見出し・ラベル）は全言語で英語のまま。訳すのは日本語で書いた文言
+- 言語の判定は URL ではなく、`<head>` のスクリプト（`src/i18n/localeScript.ts`）が `html[data-locale]` に書く。サーバーコンポーネントで全言語を出力する場合は `data-locales` 属性 + CSS（`globals.css`）で出し分ける
+- 固有名詞（人名・大学名・大会名など）は誤訳しやすいので、必要なら原語を併記する
+
 ### 説明・計画は日本語
 
 ユーザーへの応答、ExitPlanMode の plan 内容、コミットメッセージ本文、PR description、ドキュメントはすべて日本語で書く（ユーザー設定）。コード内のコメントは最小限に留め、必要な場合のみ日本語で書いてよい。
@@ -104,8 +116,9 @@ npx tsc -p functions/tsconfig.json --noEmit
 1. `npm run build` が成功し `out/` が生成される
 2. 型エラーがない（`npx tsc --noEmit`）
 3. フロアを追加・削除した場合、上記「フロア追加時のナビゲーション同期」の全箇所を更新済み
-4. Next.js API Route を追加していない（Cloudflare Pages Functions に置いた）
-5. `next.config.js` の `output: 'export'` を残してある
+4. 表示文言を変えた場合、上記「表示文言は 4 言語すべて更新する」に従い 4 言語とも更新済み
+5. Next.js API Route を追加していない（Cloudflare Pages Functions に置いた）
+6. `next.config.js` の `output: 'export'` を残してある
 
 ## 開発コマンド
 
@@ -163,10 +176,15 @@ src/
 │   │   ├── Floor01.tsx 〜 Floor07.tsx
 │   ├── ui/                     # shadcn/ui（button, card, dialog, input）
 │   └── （その他: Header, Building, ProjectCard, CodeBackground, etc.）
-├── content/blog/               # Markdown 記事
+├── content/blog/               # Markdown 記事（日本語の原文。翻訳は en/ zh/ ko/ 配下）
 ├── data/repos.json             # fetch-repos.js が生成（gitignore 対象なら除外）
 ├── data/records.ts             # Floor07 のハッカソン / OSS データ（手動管理）
 ├── hooks/useFloorNavigation.ts # フロア間遷移フック
+├── i18n/
+│   ├── config.ts               # 対応言語（ja/en/zh/ko）・Localized 型
+│   ├── dictionaries/           # UI 文言の辞書（ja.ts が正、他言語は Dictionary 型で強制）
+│   ├── I18nProvider.tsx        # useI18n()（locale / setLocale / t）
+│   └── localeScript.ts         # 描画前に表示言語を決める <head> スクリプト
 ├── lib/
 │   ├── animations.ts           # GSAP 共通定義
 │   ├── content.ts              # Markdown ローダー
