@@ -4,9 +4,11 @@ import React, { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import gsap from 'gsap'
 import { AccessCard } from '../AccessCard'
+import { useI18n } from '@/i18n/I18nProvider'
 
 const Floor01: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloorSelect }) => {
   const router = useRouter()
+  const { t } = useI18n()
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   const handleEnterBuilding = () => {
@@ -95,40 +97,34 @@ const Floor01: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
           <h3 className="font-oswald text-4xl mb-8 text-gray-300">Building Guide</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans text-sm text-gray-400 leading-relaxed">
             <div>
-              <p className="mb-4">
-                このサイトは、自分の活動や作品を「ビル」に見立てて構成しています。
-                画面上のエレベーターからフロアを選ぶと、そのフロアの内容が表示されます。
-              </p>
-              <p>
-                気軽に見て回ってください。スクロールでテキストや細かい要素が現れますし、隠しコンテンツもいくつか用意しています。
-                読みやすさ・操作性を大事にしているので、直感的に楽しめるはずです。
-              </p>
+              <p className="mb-4">{t.floor01.guideIntro[0]}</p>
+              <p>{t.floor01.guideIntro[1]}</p>
             </div>
             <div>
               <ul className="space-y-4 border-l border-white/20 pl-6">
                 <li>
                   <span className="block text-white font-bold text-xs mb-1">FLOOR 02: WORKS</span>
-                  制作実績・プロジェクトの展示エリア
+                  {t.floor01.guide.works}
                 </li>
                 <li>
                   <span className="block text-white font-bold text-xs mb-1">FLOOR 03: SKILL</span>
-                  技術スタック
+                  {t.floor01.guide.skill}
                 </li>
                 <li>
                   <span className="block text-white font-bold text-xs mb-1">FLOOR 04: ABOUT</span>
-                  経歴・自己紹介
+                  {t.floor01.guide.about}
                 </li>
                 <li>
                   <span className="block text-white font-bold text-xs mb-1">FLOOR 05: BLOG</span>
-                  ブログ
+                  {t.floor01.guide.blog}
                 </li>
                 <li>
                   <span className="block text-white font-bold text-xs mb-1">FLOOR 06: GITHUB</span>
-                  Pull Request の活動ログ
+                  {t.floor01.guide.github}
                 </li>
                 <li>
                   <span className="block text-white font-bold text-xs mb-1">FLOOR 07: RECORDS</span>
-                  ハッカソン出場・OSS コントリビュートの記録
+                  {t.floor01.guide.records}
                 </li>
               </ul>
             </div>

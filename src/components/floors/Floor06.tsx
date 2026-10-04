@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useMemo } from 'react'
 import type { PRActivity, PRState } from '@/types/github'
+import { useI18n } from '@/i18n/I18nProvider'
+import { htmlLang, type Locale } from '@/i18n/config'
 
 const PAGE_SIZE = 30
 const GITHUB_USERNAME = 'harry2480'
@@ -13,7 +15,7 @@ const stateColor: Record<PRState, string> = {
   closed: 'text-gray-400',
 }
 
-function formatRelativeTime(dateString: string): string {
+function formatRelativeTime(dateString: string, locale: Locale): string {
   const date = new Date(dateString)
   const now = new Date()
   const secondsAgo = (now.getTime() - date.getTime()) / 1000
@@ -23,7 +25,7 @@ function formatRelativeTime(dateString: string): string {
   if (secondsAgo < 86400) return `${Math.floor(secondsAgo / 3600)}h ago`
   if (secondsAgo < 604800) return `${Math.floor(secondsAgo / 86400)}d ago`
 
-  return date.toLocaleDateString('ja-JP')
+  return date.toLocaleDateString(htmlLang[locale])
 }
 
 function displayRepoName(repoName: string): string {
@@ -36,6 +38,7 @@ const chipActive = 'border-white text-white bg-white/10'
 const chipInactive = 'border-white/20 text-gray-400 hover:border-white/50 hover:text-white'
 
 const Floor06: React.FC<{ onFloorSelect?: (floor: number) => void }> = () => {
+  const { locale, t } = useI18n()
   const [activity, setActivity] = useState<PRActivity | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -137,7 +140,7 @@ const Floor06: React.FC<{ onFloorSelect?: (floor: number) => void }> = () => {
 
         {!loading && !error && activity && activity.total === 0 && (
           <div className="border border-white/20 p-8 text-center">
-            <p className="font-sans text-sm text-gray-400">PR が見つかりません</p>
+            <p className="font-sans text-sm text-gray-400">{t.github.empty}</p>
           </div>
         )}
 
@@ -209,7 +212,7 @@ const Floor06: React.FC<{ onFloorSelect?: (floor: number) => void }> = () => {
                             {pr.repo_name} #{pr.number}
                           </span>
                           <span className="font-mono text-xs text-gray-500">
-                            {formatRelativeTime(pr.updated_at)}
+                            {formatRelativeTime(pr.updated_at, locale)}
                           </span>
                         </div>
                         <h3 className="font-oswald text-2xl lg:text-3xl text-white mb-3 group-hover:text-brand-accent transition-colors">

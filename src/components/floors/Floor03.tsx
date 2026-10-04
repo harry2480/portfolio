@@ -1,14 +1,17 @@
 'use client'
 
 import React from 'react'
+import { useI18n } from '@/i18n/I18nProvider'
 
 const Floor03: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloorSelect }) => {
+  const { t } = useI18n()
+
   return (
     <section className="floor-container">
       <div className="pt-32 px-6 pb-20 max-w-6xl mx-auto">
         <div className="flex items-end justify-between mb-12 border-b border-white/20 pb-4">
           <h2 className="font-oswald text-6xl lg:text-8xl">Lab / Skills</h2>
-          <span className="font-sans text-xs tracking-widest mb-4">技術スタック</span>
+          <span className="font-sans text-xs tracking-widest mb-4">{t.skill.subtitle}</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

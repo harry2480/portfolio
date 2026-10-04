@@ -7,12 +7,12 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['"Noto Sans JP"', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', '"Helvetica Neue"', 'Arial'],
-        'oswald': ['Oswald', '"Noto Sans JP"', 'sans-serif'],
-        'inter': ['Inter', '"Noto Sans JP"', 'sans-serif'],
-        'archivo': ['"Archivo Narrow"', '"Noto Sans JP"', 'sans-serif'],
-        'playfair': ['"Playfair Display"', '"Noto Sans JP"', 'serif'],
-        'poppins': ['Poppins', '"Noto Sans JP"', 'sans-serif'],
+        'sans': ['var(--font-cjk)', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', '"Helvetica Neue"', 'Arial'],
+        'oswald': ['Oswald', 'var(--font-cjk)', 'sans-serif'],
+        'inter': ['Inter', 'var(--font-cjk)', 'sans-serif'],
+        'archivo': ['"Archivo Narrow"', 'var(--font-cjk)', 'sans-serif'],
+        'playfair': ['"Playfair Display"', 'var(--font-cjk)', 'serif'],
+        'poppins': ['Poppins', 'var(--font-cjk)', 'sans-serif'],
       },
       colors: {
         brand: {
