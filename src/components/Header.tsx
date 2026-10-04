@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useRouter } from 'next/navigation'
+import { LanguageSwitcher } from './LanguageSwitcher'
 
 interface HeaderProps {
   onMenuToggle: () => void
@@ -28,6 +29,8 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle, onFloorClick }) => {
       </div>
       
       <div className="flex flex-col items-end gap-4 pointer-events-auto">
+        <LanguageSwitcher />
+
         {/* GitHub Icon Link */}
         <a 
           href="https://github.com/harry2480/portfolio"

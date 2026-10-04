@@ -2,9 +2,11 @@
 
 import React from 'react'
 import { useRouter } from 'next/navigation'
+import { useI18n } from '@/i18n/I18nProvider'
 
 const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloorSelect }) => {
   const router = useRouter()
+  const { t } = useI18n()
   
   return (
     <section className="floor-container">
@@ -12,14 +14,14 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
         {/* Hero / Title Section */}
         <div className="flex items-end justify-between mb-16 border-b border-white/20 pb-4">
           <h2 className="font-oswald text-6xl lg:text-8xl">About</h2>
-          <span className="font-sans text-xs tracking-widest mb-4">経歴・自己紹介</span>
+          <span className="font-sans text-xs tracking-widest mb-4">{t.about.subtitle}</span>
         </div>
 
         {/* Tagline */}
         <div className="mb-16">
         <h3 className="font-oswald text-2xl text-white mb-4">Profile</h3>
           <p className="font-sans text-sm text-gray-300 leading-relaxed">
-            大阪工業大学知的財産学部知的財産学科卒業。ソフトウェアエンジニア。
+            {t.about.profile}
           </p>
         </div>
 
@@ -28,11 +30,7 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
           {/* CONCEPT */}
           <div>
             <h3 className="font-oswald text-2xl text-white mb-4">Concept</h3>
-            <p>
-              制限条件下で最適解を見つけ出すリソース配分能力と、
-              「他者への影響力・エンターテイナー」としての姿勢を大切にしています。
-              チームのために動き、実績を残すことにやりがいを感じます。
-            </p>
+            <p>{t.about.concept}</p>
           </div>
 
           {/* WORKS / SELECTED PROJECTS */}
@@ -43,18 +41,18 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
                 onClick={() => router.push('/works')}
                 className="border border-white/30 px-4 py-2 text-xs font-oswald hover:bg-white/10 transition-colors"
               >
-                全作品を見る
+                {t.about.viewAllWorks}
               </button>
             </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Project Card 1 */}
               <div className="border border-white/20 p-4 rounded-sm">
-                <p className="text-white font-bold text-sm mb-2">人力飛行機プロジェクト</p>
+                <p className="text-white font-bold text-sm mb-2">{t.about.birdman.title}</p>
                 <p className="text-xs text-gray-400 mb-3">
-                  広報班長としてWebページ開発・運用を強化。
+                  {t.about.birdman.description}
                 </p>
                 <div className="flex gap-2 flex-wrap">
-                  <span className="text-[10px] border border-white/30 px-2 py-1">Webサイト運用</span>
+                  <span className="text-[10px] border border-white/30 px-2 py-1">{t.about.birdman.tag}</span>
                 </div>
                 <div className="mt-3 flex gap-2">
                   <a
@@ -79,9 +77,9 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
 
               {/* Project Card 2 */}
               <div className="border border-white/20 p-4 rounded-sm">
-                <p className="text-white font-bold text-sm mb-2">3D シューティングゲーム（卒業制作）</p>
+                <p className="text-white font-bold text-sm mb-2">{t.about.shootingGame.title}</p>
                 <p className="text-xs text-gray-400 mb-3">
-                  最優秀賞受賞。Unity + Maya + Adobe CC で企画・PM から実装まで統括。
+                  {t.about.shootingGame.description}
                 </p>
                 <div className="flex gap-2 flex-wrap">
                   <span className="text-[10px] border border-white/30 px-2 py-1">Unity</span>
@@ -115,18 +113,12 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
           <div>
             <h3 className="font-oswald text-2xl text-white mb-6">Media & Awards</h3>
             <div className="space-y-3 text-xs">
-              <div className="border-l-2 border-brand-accent pl-3">
-                <p className="text-white font-bold">関西ローカル番組 取材</p>
-                <p className="text-gray-400">2022年6月、2023年6月 / 鳥人間コンテスト関連</p>
-              </div>
-              <div className="border-l-2 border-brand-accent pl-3">
-                <p className="text-white font-bold">読売公式取材・地上波放映</p>
-                <p className="text-gray-400">2024-2025年 / ダイジェスト・取材映像・フライト映像を放映</p>
-              </div>
-              <div className="border-l-2 border-brand-accent pl-3">
-                <p className="text-white font-bold">大阪関西万博 出展</p>
-                <p className="text-gray-400">2025年 / 3日間で30,000人超の来場者を動員</p>
-              </div>
+              {t.about.media.map((item) => (
+                <div key={item.title} className="border-l-2 border-brand-accent pl-3">
+                  <p className="text-white font-bold">{item.title}</p>
+                  <p className="text-gray-400">{item.detail}</p>
+                </div>
+              ))}
               {/*
               <div className="border-l-2 border-brand-accent pl-3">
                 <p className="text-white font-bold">資格・免許</p>
@@ -139,7 +131,7 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
           {/* PERSONAL */}
           <div>
             <h3 className="font-oswald text-2xl text-white mb-4">Interest</h3>
-            音楽鑑賞、LIVE、プログラミング（個人開発）
+            {t.about.interest}
             {/*
             <div className="space-y-3 text-xs text-gray-400">
               <p>
@@ -162,7 +154,7 @@ const Floor04: React.FC<{ onFloorSelect?: (floor: number) => void }> = ({ onFloo
           <div className="bg-white/5 border border-white/10 p-6 rounded-sm">
             <h3 className="font-oswald text-2xl text-white mb-4">Contact</h3>
             <p className="text-sm text-gray-300 mb-6">
-              技術相談、お仕事のご依頼、あるいはコラボレーションについてお気軽にご連絡ください。
+              {t.about.contact}
             </p>
             <div className="flex gap-4">
               <a

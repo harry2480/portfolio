@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { ProjectCard } from '@/components/ProjectCard'
 import type { Repo } from '@/types/github'
+import { useI18n } from '@/i18n/I18nProvider'
 
 const SKELETON_COUNT = 6
 const PAGE_SIZE = 10
@@ -42,6 +43,7 @@ function pageItems(current: number, total: number): (number | 'gap')[] {
 }
 
 export function WorksList() {
+  const { t } = useI18n()
   const [repos, setRepos] = useState<Repo[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -115,7 +117,7 @@ export function WorksList() {
   if (repos.length === 0) {
     return (
       <div className="border border-white/20 p-8 text-center">
-        <p className="font-sans text-sm text-gray-400">リポジトリが見つかりません</p>
+        <p className="font-sans text-sm text-gray-400">{t.works.empty}</p>
       </div>
     )
   }
